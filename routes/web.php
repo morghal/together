@@ -24,6 +24,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);*/
 });
+Route::get('/infos', function () {
+    return Inertia::render('Show');
+});
 
 Route::middleware([
     'auth:sanctum',

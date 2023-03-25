@@ -1,10 +1,12 @@
+<script setup>
+import { Link } from '@inertiajs/vue3'</script>
 <template>
             
                   <!--CARD-->
               
                   <div class="relative shadow-lg shadow-slate-700/50 min-w-[225px] ml-6 mr-3 rounded-xl pb-5 bg-[#4B8798] " width="225">
                     <!--CATEGORIE-->
-                    <div class="w-1/3 text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">Randonnée</div>
+                    <div class="text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">Randonnée</div>
                     <!--BOUTON FAVORIS-->
                     <button class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 ">
                       <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -52,9 +54,11 @@
                       </p>
                     </div>
                     <div class="mx-auto w-2/4">
-                      <button class="bg-[#02CB8C] w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
+                            <Link class="" href="/infos" method="get" as="a">
+                            <button class="bg-[#02CB8C] w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
                         Infos
-                      </button>
+                            </button>
+                            </Link>
                     </div>
                   </div>
 </template>

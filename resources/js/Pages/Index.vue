@@ -78,7 +78,7 @@ import Cart from '../Components/Card.vue'
                     <div class="text-center text-slate-50 p-1">random stuff</div>
                 </div>
 
-                <div class="bg-slate-50 opacity-50 text-slate-800 rounded-full sticky h-1/2 mt-3 p-2 right-0"><svg fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <div class="bg-slate-50/50 text-slate-800 rounded-full sticky h-1/2 mt-3 p-2 right-0"><svg fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"></path>
                         </svg>
                     </div>
@@ -94,14 +94,14 @@ import Cart from '../Components/Card.vue'
                     <Cart></Cart>
                     <Cart></Cart>
                     <Cart></Cart>
-                    <div class="bg-slate-50 opacity-50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <div class="bg-slate-50/50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"></path>
                         </svg>
                     </div>       
                 </div>
             </section>
 
-            <section>
+            <section class="mb-5">
               <h2 class="pl-6 text-slate-50 font-bold text-xl mb-5">Prochaines activités</h2>
               <div class="flex overflow-x-scroll pb-10 relative">
                     <Cart></Cart>
@@ -109,7 +109,7 @@ import Cart from '../Components/Card.vue'
                     <Cart></Cart>
                     <Cart></Cart>
                     <Cart></Cart>
-                    <div class="bg-slate-50 opacity-50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <div class="bg-slate-50/50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"></path>
                         </svg>
                     </div>
