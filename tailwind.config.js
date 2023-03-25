@@ -18,7 +18,7 @@ module.exports = {
                 'moonstone' :'#7ABFBE'
               },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Roboto', ...defaultTheme.fontFamily.sans],
             },
         },
     },
