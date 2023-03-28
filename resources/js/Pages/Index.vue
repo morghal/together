@@ -124,9 +124,6 @@ import navbar from '../Components/FooterNav.vue'
         </div>
 </template>
 <style>
-* {
-  box-sizing: border-box; ;
-}
 .icone {
   stroke: #f8fafc;
   stroke-width: 2px;
