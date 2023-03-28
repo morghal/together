@@ -5,9 +5,9 @@ import navbar from '../Components/FooterNav.vue'
 </script>
 
 <template>
-    <div class="bg-gradient-to-b from-moonstone to-[#539ABB] w-auto h-auto max-w-full max-h-full">
+    <div class="bg-gradient-to-b from-moonstone to-[#539ABB]">
       <!--HEADER-->
-        <header class="pl-6 w-full">
+        <header class="pl-6">
             <h1 class="text-slate-50 text-4xl font-bold py-10">Together</h1>
             <div class="flex items-center">
                 <div class="relative">
@@ -124,11 +124,6 @@ import navbar from '../Components/FooterNav.vue'
         </div>
 </template>
 <style>
-.icone {
-  stroke: #f8fafc;
-  stroke-width: 2px;
-  stroke-linejoin: round;
-}
 .overflow-x-scroll::-webkit-scrollbar {
     display: none;
   }

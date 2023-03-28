@@ -62,3 +62,10 @@ import { Link } from '@inertiajs/vue3'</script>
                     </div>
                   </div>
 </template>
+<style>
+.icone {
+  stroke: #f8fafc;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+}
+</style>
