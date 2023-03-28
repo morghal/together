@@ -15,7 +15,11 @@ module.exports = {
         extend: {
             colors: {
                 'jellybeanblue': '#4B8798',
-                'moonstone' :'#7ABFBE'
+                'moonstone' :'#7ABFBE',
+                'crystal' :'#B4D9D9',
+                'gargoylegas': '#FDE047',
+                'caribbeangreen':'#02CB8C',
+                'pewter-blue': '#85ADB9',
               },
             fontFamily: {
                 sans: ['Roboto', ...defaultTheme.fontFamily.sans],

@@ -17,8 +17,8 @@ import { Link } from '@inertiajs/vue3'</script>
                     <img class="w-full rounded-t-xl" height="125" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" alt="Cover Photo">
                     <div class="px-6 py-4">
                       <h3 class="font-bold text-md mb-2 text-slate-50">Randonnée charmante...</h3>
-                      <div class="text-[#02CB8C] mb-2">
-                        <svg fill="currentColor" class="icone h-6 w-6 inline text-[#02CB8C]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <div class="text-caribbeangreen mb-2">
+                        <svg fill="currentColor" class="icone h-6 w-6 inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
                         </svg>
                         <p class="text-base inline"> Liège, 10km</p>
@@ -29,16 +29,16 @@ import { Link } from '@inertiajs/vue3'</script>
                         </svg> <span class="pr-2">Maria</span>
 
                         <!--5 étoiles-->
-                        <svg fill="currentColor" class="text-[#FDE047] inline align-text-top h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <svg fill="currentColor" class="text-gargoylegas inline align-text-top h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"></path>
                         </svg>
-                        <svg fill="currentColor" class="text-[#FDE047] align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <svg fill="currentColor" class="text-gargoylegas align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"></path>
                         </svg>
-                        <svg fill="currentColor" class="text-[#FDE047] align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <svg fill="currentColor" class="text-gargoylegas align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"></path>
                         </svg>
-                        <svg fill="currentColor" class="text-[#FDE047] align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <svg fill="currentColor" class="text-gargoylegas align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"></path>
                         </svg>
                         <svg fill="currentColor" class="text-slate-50 align-text-top inline  h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -55,7 +55,7 @@ import { Link } from '@inertiajs/vue3'</script>
                     </div>
                     <div class="mx-auto w-2/4">
                             <Link class="" href="/infos" method="get" as="a">
-                            <button class="bg-[#02CB8C] w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
+                            <button class="bg-caribbeangreen w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
                         Infos
                             </button>
                             </Link>

@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.0.16",
+        "pinia": "^2.0.33",
         "swiper": "^9.1.1",
         "vuetify": "^3.1.10",
         "watch": "^0.13.0"

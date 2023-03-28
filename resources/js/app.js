@@ -6,12 +6,15 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
+import { createPinia } from 'pinia'
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+const pinia = createPinia();
 const vuetify = createVuetify({
     components,
     directives,
@@ -25,6 +28,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(pinia)
             .use(vuetify)
             .mount(el);
     },

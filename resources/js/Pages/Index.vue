@@ -4,7 +4,7 @@ import Cart from '../Components/Card.vue'
 </script>
 
 <template>
-    <div class="w-auto h-auto max-w-full max-h-full">
+    <div class="bg-gradient-to-b from-moonstone to-[#539ABB] w-auto h-auto max-w-full max-h-full">
       <!--HEADER-->
         <header class="pl-6 w-full">
             <h1 class="text-slate-50 text-4xl font-bold py-10">Together</h1>

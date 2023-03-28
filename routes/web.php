@@ -27,6 +27,9 @@ Route::get('/', function () {
 Route::get('/infos', function () {
     return Inertia::render('Show');
 });
+Route::get('/edit', function () {
+    return Inertia::render('Edit');
+});
 
 Route::middleware([
     'auth:sanctum',
