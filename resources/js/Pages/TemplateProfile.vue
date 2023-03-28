@@ -94,4 +94,17 @@
         stroke: #f8fafc;
         stroke-width: 1px;
     }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
 </style>

@@ -35,6 +35,10 @@ Route::get('/profile', function () {
     return Inertia::render('TemplateProfile');
 });
 
+Route::get('/editprofile', function () {
+    return Inertia::render('EditProfile');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
