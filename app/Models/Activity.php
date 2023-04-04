@@ -23,7 +23,11 @@ class Activity extends Model
     ];
 
     public function categories() {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'activities_have_categories');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     public function images() {

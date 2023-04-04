@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use \App\Models\Category;
+use \App\Models\Activity;
 
 class User extends Authenticatable
 {
@@ -70,6 +71,14 @@ class User extends Authenticatable
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'users_have_categories');
+    }
+
+    public function users() {
+        return $this->belongsToMany($this::class, 'users_have_followers');
+    }
+
+    public function activities() {
+        return $this->hasMany(Activity::class);
     }
 }

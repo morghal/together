@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('images');
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('activity_id')->constrained('activities')->nullable();
             $table->timestamps();
         });
     }

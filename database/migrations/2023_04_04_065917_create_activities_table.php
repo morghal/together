@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('image_id')->constrained('images');
             $table->decimal('latitude', $precision = 10, $scale = 8);
             $table->decimal('longitude', $precision = 11, $scale = 8);
             $table->dateTime('start_time');
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('max_participants');
             $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

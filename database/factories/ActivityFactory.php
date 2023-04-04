@@ -23,9 +23,11 @@ class ActivityFactory extends Factory
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
             'start_time' => fake()->dateTime(),
-            'duration' => fake()->date(),
-            'description' => fake()->words(10),
+            'duration' => fake()->time(),
+            'description' => fake()->words(10, true),
             'max_participants'=> fake()->numberBetween(1, 20),
+            'user_id' => fake()->numberBetween(1, 10),
+            'category_id'=> fake()->numberBetween(1, 5),
         ];
     }
 }

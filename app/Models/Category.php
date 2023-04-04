@@ -15,10 +15,10 @@ class Category extends Model
     ];
 
     public function activities() {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class, 'activities_have_categories');
     }
 
     public function users() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'users_have_categories');
     }
 }

@@ -19,7 +19,8 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=> fake()->words(1),
+            'name'=> fake()->words(1, true),
+            'activity_id' => fake()->numberBetween(1,10)
         ];
     }
 }
