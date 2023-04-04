@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use \App\Models\Category;
 
 class User extends Authenticatable
 {
@@ -24,7 +25,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
+        'pseudo',
+        'rating',
+        'birth_date',
+        'photo',
+        'city',
+        'country',
+        'intro',
+        'description',
         'email',
         'password',
     ];
@@ -58,4 +68,8 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+    }
 }

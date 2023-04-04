@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('pseudo');
             $table->integer('rating');
             $table->date('birth_date');
-            $table->string('photo');
+            $table->string('photo', 2048)->nullable();
             $table->string('city');
             $table->string('country');
             $table->tinyText('intro');
