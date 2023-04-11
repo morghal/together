@@ -1,11 +1,14 @@
 <script setup>
 import Cart from '../Components/Card.vue'
 import navbar from '../Components/FooterNav.vue'
+import TogetherLayout from '@/Layouts/AppLayout.vue';
 
 </script>
 
 <template>
-    <div class="bg-gradient-to-b from-moonstone to-[#539ABB]">
+    <TogetherLayout>
+    <template #shasha>
+        <div class="">
       <!--HEADER-->
         <header class="pl-6">
             <h1 class="text-slate-50 text-4xl font-bold py-10">Together</h1>
@@ -122,6 +125,8 @@ import navbar from '../Components/FooterNav.vue'
           </footer>
           <!--/MAIN-->
         </div>
+    </template>
+    </TogetherLayout>
 </template>
 <style>
 .overflow-x-scroll::-webkit-scrollbar {

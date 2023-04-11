@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('pseudo');
-            $table->integer('rating');
+            $table->integer('rating')->nullable();
             $table->date('birth_date');
             $table->string('photo', 2048)->nullable();
             $table->string('city');
             $table->string('country');
-            $table->tinyText('intro');
-            $table->text('description');
+            $table->tinyText('intro')->nullable();
+            $table->text('description')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

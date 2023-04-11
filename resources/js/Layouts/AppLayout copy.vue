@@ -70,9 +70,6 @@ const logout = () => {
                                         </span>
                                     </template>
 
-                                    <slot name="shasha">
-
-                                    </slot>
                                     <template #content>
                                         <div class="w-60">
                                             <!-- Team Management -->
