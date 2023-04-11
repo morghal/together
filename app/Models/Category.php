@@ -15,7 +15,7 @@ class Category extends Model
     ];
 
     public function activities() {
-        return $this->belongsToMany(Activity::class, 'activities_have_categories');
+        return $this->hasMany(Activity::class);
     }
 
     public function users() {

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use \App\Models\Activity;
 use Inertia\Inertia;
 
 /*
@@ -24,8 +25,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/infos', function () {
-    return Inertia::render('Show');
+Route::get('/infos/{id}', function () {
+    return Inertia::render('Show', [
+     ]);
 });
 Route::get('/edit', function () {
     return Inertia::render('Edit');
@@ -53,6 +55,18 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Index');
+        return Inertia::render('Index', ['Activities' => Activity::all()->map(function ($activity) {
+            return [
+                'id' => $activity->id,
+                'title' => $activity->title,
+                'nbr_participants' => $activity->nbr_participants,
+                'max_participants' => $activity->max_participants,
+                'category_name' => $activity->category->name,
+                'user' => $activity->user->pseudo,
+                'rating' => $activity->user->rating,
+                'start_time' => $activity->start_time,
+                'img' => $activity->img
+            ] ;
+        })]);
     })->name('dashboard');
 });

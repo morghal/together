@@ -22,8 +22,8 @@ class Activity extends Model
         'max_participants',
     ];
 
-    public function categories() {
-        return $this->belongsToMany(Category::class, 'activities_have_categories');
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 
     public function user() {

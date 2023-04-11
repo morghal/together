@@ -18,7 +18,7 @@ defineProps({
                         </svg>
             <h1 class="text-slate-50 text-center text-4xl font-bold mb-2">Together</h1>
             <div v-if="canLogin" class="p-3 text-center">
-            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">accès Dashboard</Link>
+            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="font-semibold text-slate-50 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">accès Dashboard</Link>
 
             <template v-else class="flex justify-center">
                 <Link :href="route('login')" class="font-semibold mr-4">Log in</Link>
