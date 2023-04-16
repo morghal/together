@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use \App\Models\Activity;
 use Inertia\Inertia;
+use \App\Http\Controllers\ActivitiesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/infos/{id}', function () {
-    return Inertia::render('Show', [
-     ]);
-});
+
 Route::get('/edit', function () {
     return Inertia::render('Edit');
 });
@@ -49,24 +47,13 @@ Route::get('/filter', function () {
     return Inertia::render('Filter');
 });
 
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Index', ['Activities' => Activity::all()->map(function ($activity) {
-            return [
-                'id' => $activity->id,
-                'title' => $activity->title,
-                'nbr_participants' => $activity->nbr_participants,
-                'max_participants' => $activity->max_participants,
-                'category_name' => $activity->category->name,
-                'user' => $activity->user->pseudo,
-                'rating' => $activity->user->rating,
-                'start_time' => $activity->start_time,
-                'img' => $activity->img
-            ] ;
-        })]);
-    })->name('dashboard');
+    Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
+    Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
 });

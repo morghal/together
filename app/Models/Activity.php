@@ -33,4 +33,8 @@ class Activity extends Model
     public function images() {
         return $this->hasMany(Image::class);
     }
+
+    public function participants() {
+        return $this->belongsToMany(User::class, 'activities_have_participants');
+    }
 }

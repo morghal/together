@@ -3,7 +3,8 @@ import { Link } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 
 const props = defineProps({
-  item:Object
+  item:Object,
+  img:String
 });
 
 const formatTime = () => {
@@ -12,11 +13,8 @@ const formatTime = () => {
   return newDate;
 }
 
-const imgPath = computed(
-  () => {return 'storage/img/' + props.item.img;}
-)
 
-const url = computed( () => { return '/infos/' + props.item.id})
+const url = computed( () => { return '/infos/' + props.item.id});
 
 
 
@@ -34,14 +32,14 @@ const url = computed( () => { return '/infos/' + props.item.id})
                       </svg>
                     </button> 
                     <div class="text-slate-50 font-bold absolute top-28 text-xs right-4">{{ formatTime() }}</div>
-                    <img class="w-full rounded-t-xl" height="125" :src="imgPath" alt="Cover Photo">
+                    <img class="w-full rounded-t-xl" height="125" :src="img" alt="Cover Photo">
                     <div class="px-6 py-4">
                       <h3 class="font-bold text-md mb-2 text-slate-50">{{item.title }}</h3>
                       <div class="text-caribbeangreen mb-2">
                         <svg fill="currentColor" class="icone h-6 w-6 inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
                         </svg>
-                        <p class="text-base inline"> Liège, 10km</p>
+                        <p class="text-base inline"> {{ item.ville + ', 10km' }}</p>
                       </div>
                 
                       <p class="text-slate-50 text-base mb-2">
@@ -64,7 +62,7 @@ const url = computed( () => { return '/infos/' + props.item.id})
                       </p>
                     </div>
                     <div class="mx-auto w-2/4">
-                            <Link class="" :href="url" method="get" as="a">
+                            <Link class="" :href="'/infos/' + item.id" method="get" as="button">
                             <button class="bg-caribbeangreen w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
                         Infos
                             </button>

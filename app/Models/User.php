@@ -81,4 +81,8 @@ class User extends Authenticatable
     public function activities() {
         return $this->hasMany(Activity::class);
     }
+
+    public function participations() {
+        return $this->belongsToMany(Activity::class, 'activities_have_participants');
+    }
 }

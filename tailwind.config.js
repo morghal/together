@@ -9,6 +9,7 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/views/**/*.html',
         './resources/js/**/*.vue',
+        './resources/js/Pages/ShowActivity.vue'
     ],
 
     theme: {

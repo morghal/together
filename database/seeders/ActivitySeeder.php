@@ -22,7 +22,7 @@ class ActivitySeeder extends Seeder
         $users = User::all();
 
         foreach($activities as $activity) {
-            $activity->categories()->attach($categories->random());
+            $activity->category()->associate($categories->random());
             $activity->user()->associate($users->random());
         }
     }
