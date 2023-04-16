@@ -27,9 +27,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/edit', function () {
-    return Inertia::render('Edit');
-});
+
 
 Route::get('/profile', function () {
     return Inertia::render('TemplateProfile');
@@ -56,4 +54,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
     Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
+    Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
 });

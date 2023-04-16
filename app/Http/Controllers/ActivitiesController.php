@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use \App\Models\Activity;
 use \App\Models\Image;
 use \App\Models\User;
+use \App\Models\Category;
 class ActivitiesController extends Controller
 {
     public function dashboard(){
@@ -52,5 +53,26 @@ class ActivitiesController extends Controller
                 'participants' => $activity->participants
             ],
         ]);
+    }
+
+    public function edit(Activity $activity) {
+        return Inertia::render('Edit', [
+            'activity' => [
+                'id' => $activity->id,
+                'title' => $activity->title,
+                'max_participants' => $activity->max_participants,
+                'category_name' => $activity->category->name,
+                'user' => $activity->user->pseudo,
+                'start_time' => $activity->start_time,
+                'duration' => $activity->duration,
+                'description' => $activity->description,
+                'adresse' => $activity->address,
+                'postcode' => $activity->postcode,
+                'ville' => $activity->city,
+                'pays' => $activity->country,
+                'image' => Image::where('id', $activity->id)->get('name')->first()->name],
+
+            'categories' => Category::all()
+            ]);
     }
 }
