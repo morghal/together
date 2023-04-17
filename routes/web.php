@@ -37,9 +37,7 @@ Route::get('/editprofile', function () {
     return Inertia::render('EditProfile');
 });
 
-Route::get('/list', function () {
-    return Inertia::render('List');
-});
+Route::get('/list', [ActivitiesController::class, 'list']);
 
 Route::get('/filter', function () {
     return Inertia::render('Filter');

@@ -80,6 +80,28 @@ class ActivitiesController extends Controller
             ]);
     }
 
+    public function list() {
+        return Inertia::render('List', [
+            'activities' => Activity::all()->map(function($activity) {
+                return [
+                    'id' => $activity->id,
+                    'title' => $activity->title,
+                    'nbr_participants' => $activity->nbr_participants,
+                    'max_participants' => $activity->max_participants,
+                    'category_name' => $activity->category->name,
+                    'user' => $activity->user->pseudo,
+                    'rating' => $activity->user->rating,
+                    'start_time' => $activity->start_time,
+                    'adresse' => $activity->address,
+                    'postcode' => $activity->postcode,
+                    'ville' => $activity->city,
+                    'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name
+                ] ;
+            })
+        ]);
+
+    }
+
     public function create() {
         return Inertia::render('Create', ['categories' => Category::all()]);
     }
