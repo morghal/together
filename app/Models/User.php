@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use \App\Models\Category;
 use \App\Models\Activity;
+use \App\Models\Bookmark;
 
 class User extends Authenticatable
 {
@@ -84,5 +85,9 @@ class User extends Authenticatable
 
     public function participations() {
         return $this->belongsToMany(Activity::class, 'activities_have_participants');
+    }
+
+    public function bookmarks() {
+        return $this->hasMany(Bookmark::class);
     }
 }

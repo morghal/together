@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use \App\Models\Category;
 use \App\Models\User;
 use \App\Models\Image;
+use \App\Models\Bookmark;
 
 class Activity extends Model
 {
@@ -36,5 +37,9 @@ class Activity extends Model
 
     public function participants() {
         return $this->belongsToMany(User::class, 'activities_have_participants');
+    }
+
+    public function bookmarks() {
+        return $this->hasMany(Bookmark::class);
     }
 }

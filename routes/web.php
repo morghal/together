@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Models\Activity;
 use Inertia\Inertia;
 use \App\Http\Controllers\ActivitiesController;
+use \App\Http\Controllers\BookmarksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +58,7 @@ Route::middleware([
     Route::post('/store/{activity}', [ActivitiesController::class, 'store'])->name('store');
     Route::patch('/update/{activity}', [ActivitiesController::class, 'update'])->name('update');
     Route::delete('/delete/{activity}', [ActivitiesController::class, 'destroy'])->name('destroy');
+    Route::get('/favoris', [BookmarksController::class, 'index'])->name('bookmarks');
+    Route::post('/add/{activity}/favoris', [BookmarksController::class, 'store'])->name('newBookmark');
+    Route::delete('/destroy/{activity}/favoris', [BookmarksController::class, 'destroy'])->name('destroyBookmark');
 });

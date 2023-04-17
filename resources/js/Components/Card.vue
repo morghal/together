@@ -8,6 +8,7 @@ const props = defineProps({
 });
 
 const formatTime = () => {
+  console.log(props.item.bookmarked)
   const toFormat = new Date(props.item.start_time);
   const newDate = toFormat.toLocaleString('fr-FR', { month: 'long', day: 'numeric' });
   return newDate;
@@ -26,11 +27,16 @@ const url = computed( () => { return '/infos/' + props.item.id});
                     <!--CATEGORIE-->
                     <div class="text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">{{ item.category_name }}</div>
                     <!--BOUTON FAVORIS-->
-                    <button class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 ">
-                      <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
-                      </svg>
-                    </button> 
+                    <Link v-if="!item.bookmarked" :href="`/add/${item.id}/favoris`" as="button" method="post" class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                        <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
+                        </svg>
+                    </Link>
+                    <Link v-else="" :href="`/destroy/${item.id}/favoris`" as="button" method="delete" class="rounded-full bg-jellybeanblue text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                        <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
+                        </svg>
+                    </Link>
                     <div class="text-slate-50 font-bold absolute top-28 text-xs right-4">{{ formatTime() }}</div>
                     <img class="w-full rounded-t-xl" height="125" :src="img" alt="Cover Photo">
                     <div class="px-6 py-4">

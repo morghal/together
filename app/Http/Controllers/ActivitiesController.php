@@ -8,15 +8,26 @@ use \App\Models\Activity;
 use \App\Models\Image;
 use \App\Models\User;
 use \App\Models\Category;
+use \App\Models\Bookmark;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFormRequest;
 
 class ActivitiesController extends Controller
 {
     public function dashboard(){
-       // dd(Image::where('id', 3)->get('name'));
+        $activities = Activity::all();
+        $bookmarked = false;
+       
         return Inertia::render('Index', [
-            'activities' => Activity::all()->map(function($activity) {
+            'activities' => $activities->map(function($activity) {
+                    
+                    $bookmarked=false;
+                    $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', auth()->user()->id)->get();
+                    if (count($bookmark) != 0) {
+                        $bookmarked = true;
+                    }
+                      
+
                         return [
                             'id' => $activity->id,
                             'title' => $activity->title,
@@ -29,7 +40,8 @@ class ActivitiesController extends Controller
                             'adresse' => $activity->address,
                             'postcode' => $activity->postcode,
                             'ville' => $activity->city,
-                            'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name
+                            'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
+                            'bookmarked' => $bookmarked
                         ] ;
                     }),
                 
@@ -37,6 +49,13 @@ class ActivitiesController extends Controller
     }
 
     public function show(Activity $activity) {
+        
+        $bookmarked=false;
+        $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', auth()->user()->id)->get();
+        if (count($bookmark) != 0) {
+            $bookmarked = true;
+        }
+
         return Inertia::render('ShowActivity', [
             'activity' => [
                 'id' => $activity->id,
@@ -53,7 +72,8 @@ class ActivitiesController extends Controller
                 'ville' => $activity->city,
                 'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
                 'user' => User::where('id', $activity->user_id)->get()->first(),
-                'participants' => $activity->participants
+                'participants' => $activity->participants,
+                'bookmarked' => $bookmarked
             ],
         ]);
     }

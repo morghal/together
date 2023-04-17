@@ -38,11 +38,16 @@
             </li>
 
             <li>
-                <button class="absolute right-14 top-3 mr-1 rounded-full p-2 bg-slate-50 text-center text-slate-800 ">
-                      <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
-                      </svg>
-                </button>
+                <Link v-if="!activity.bookmarked" :href="`/add/${activity.id}/favoris`" as="button" method="post" class="absolute right-14 top-3 mr-1 rounded-full p-2 bg-slate-50 text-center text-slate-800 "> 
+                        <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
+                        </svg>
+                    </Link>
+                    <Link v-else="" :href="`/destroy/${activity.id}/favoris`" as="button" method="delete" class=" bg-jellybeanblue absolute right-14 top-3 mr-1 rounded-full p-2 text-center"> 
+                        <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
+                        </svg>
+                    </Link>
               
             </li>
 
