@@ -181,9 +181,15 @@ class ActivitiesController extends Controller
     }
 
     public function destroy(Activity $activity) {
-        $image = Image::where('activity_id', $activity->id);
+        $image = Image::where('activity_id', $activity->id)->get()->first();
+        
+        $participants = User::all();
+        $activity->participants()->detach($participants);
         Image::destroy($image->id);
-
+        Storage::delete('public/img/' . $image->name);
         Activity::destroy($activity->id);
+
+        // Return a response indicating success
+        return to_route('dashboard');
     }
 }
