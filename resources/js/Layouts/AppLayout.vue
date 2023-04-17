@@ -88,6 +88,10 @@ const logout = () => {
                                 Dashboard
                             </ResponsiveNavLink>
 
+                            <ResponsiveNavLink :href="route('create')">
+                                <span class="text-caribbeangreen">Create activity</span>
+                            </ResponsiveNavLink>
+
                             <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                 Profile
                             </ResponsiveNavLink>
