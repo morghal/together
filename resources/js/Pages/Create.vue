@@ -2,54 +2,28 @@
     import navbar from '@/Components/FooterNav.vue'
     import { Link, useForm } from '@inertiajs/vue3'
     import { computed, ref } from '@vue/reactivity'
-    import EditForm from '@/Components/EditForm.vue'
-import { reactive } from 'vue';
 
-    const imgPath = computed( () => {return '/storage/img/' + props.activity.image;});
     const props = defineProps({
-        activity:Array,
-        categories:Array
-    })
-    const isChecked = (category) => {
-        if(category.name == props.activity.category_name) {
-            return true;
-        } 
-        else {
-            return false;
-        }
-    }
-    const hour = computed( () => {return props.activity.start_time.split(' ').slice(1)[0].split(':').slice(0,2).join(':')});
+        categories:Array,
+    });
 
-    const dateFormatted = computed(() => {return props.activity.start_time.split(' ').slice(0,1)[0]});
-    const duration = computed(() => { return props.activity.duration.split(':').slice(0,2).join(':')});
     const form = useForm({
-        _method:'PATCH',
-        'title':props.activity.title,
-        'category':props.activity.category_id,
-        'dateActivite':dateFormatted,
-        'heureActivite': hour,
-        'duration':duration,
-        'nbrParticipants':props.activity.max_participants,
-        'address':props.activity.address,
-        'city':props.activity.city,
-        'country':props.activity.country,
-        'description':props.activity.description,
+        _method:'POST',
+        'title':null,
+        'category':null,
+        'dateActivite':null,
+        'heureActivite': null,
+        'duration':null,
+        'nbrParticipants':null,
+        'address':null,
+        'city':null,
+        'country':null,
+        'description':null,
         'image': null,
     });
-    const getFile = (event) => {
-        const file= event.target.files[0];
-        form.image = file;
-        //console.log(form);
-    }
-    const log = (input) => {
-        console.log(input);
-    }
-    const select = (index) => {
-        form.category = index;
-    }
+
     const submitForm = () => {
-      // Submit form data to the server
-      form.post(`/update/${props.activity.id}`);
+      form.post(`/store/${form.name}`);
     };
 </script>
 <template>
@@ -59,7 +33,7 @@ import { reactive } from 'vue';
         <nav class="mb-12 items-center relative w-full px-4 py-4 bg-crystal flex text-slate-50">
           <ul>
             <li>
-                <Link :href="'/infos/'+activity.id">
+                <Link href="/dashboard">
                 <svg fill="none" class="opacity-100 h-6 w-6 " stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
                 </svg>
@@ -67,7 +41,7 @@ import { reactive } from 'vue';
             </li>
 
             <li>
-                <Link :href="'/infos/'+activity.id">
+                <Link href="/dashboard">
                 <button class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
                     <svg fill="none" stroke="currentColor" class="w-4 h-4" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
@@ -79,7 +53,7 @@ import { reactive } from 'vue';
         </nav>   
     </header>
     <main class="px-6">
-        <form action="/patch" @submit.prevent="submitForm" method="PATCH" enctype="multipart/form-data">
+        <form :action="`/store/${form.name}`" @submit.prevent="submitForm" method="post" enctype="multipart/form-data">
             
             <!--IMAGE-->
             <div class="px-2 mb-12 relative">
@@ -92,7 +66,7 @@ import { reactive } from 'vue';
                     </div>
                     <img class="shadow-lg shadow-pewter-blue" :src="imgPath" alt="">
                 </label>
-                <input @change="getFile" type="file" id="image" name="image" class="" accept="image/png, image/jpeg">
+                <input @change="form.image = $event.target.files[0]" type="file" id="image" name="image" class="" accept="image/png, image/jpeg">
                 <div v-if="form.errors.image">{{ form.errors.image }}</div>
                 
             </div>
@@ -120,7 +94,7 @@ import { reactive } from 'vue';
                     </svg>Categories
                 </legend>
                 <div v-for="category in categories" class="mb-5">
-                    <input @click="select(category.id)" :value="category.id" type="radio" name="category" :id="category.name" :checked="isChecked(category)" class="hidden peer">
+                    <input @click="form.category = category.id" :value="category.id" type="radio" name="category" :id="category.name" class="hidden peer">
                     <label :for="category.name" class="bg-crystal mr-2 text-slate-600 shadow-sm px-3 py-2 rounded-lg peer-checked:bg-jellybeanblue peer-checked:text-slate-50 shadow-pewter-blue">
                     {{ category.name }}
                     </label>
@@ -244,9 +218,9 @@ import { reactive } from 'vue';
                 <button class="text-center mr-3 rounded-lg bg-jellybeanblue font-medium text-slate-50 py-2 px-4" type="submit">
                     Enregistrer
                 </button>
-                <Link :href="'/delete/'+activity.id" method="delete" as="button">
+                <Link href="/dashboard" as="button">
                     <button class="text-center rounded-lg bg-transparent border-jellybeanblue border-2 border-solid font-medium text-jellybeanblue py-2 px-4" type="button">
-                    supprimer
+                    Annuler
                     </button>
                 </Link>
                 

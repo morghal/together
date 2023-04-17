@@ -80,6 +80,57 @@ class ActivitiesController extends Controller
             ]);
     }
 
+    public function create() {
+        return Inertia::render('Create', ['categories' => Category::all()]);
+    }
+
+    public function store(Request $request) {
+        $data = $request->validate([
+            'image' => 'required|mimes:jpg,bmp,png',
+            'title' => 'required|string|max:255', 
+            'category' => 'required|integer', 
+            'dateActivite' => 'required|date_format:Y-m-d', 
+            'heureActivite' => 'required|date_format:H:i',
+            'duration' => 'required|string|date_format:H:i', 
+            'nbrParticipants' => 'required|integer|min:1', 
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $activity = new Activity;
+        $date = $request->dateActivite . ' ' . $request->heureActivite;
+
+            // Remplit le modèle de données
+            $activity->title = $request->title;
+            $activity->category_id = $request->category;
+            $activity->start_time = $date;
+            $activity->duration = $request->duration;
+            $activity->max_participants = $request->nbrParticipants;
+            $activity->address = $request->address;
+            $activity->city = $request->city;
+            $activity->country = $request->country;
+            $activity->description = $request->description;
+            $activity->user_id = auth()->user()->id;
+
+            // sauvegarde db
+            $activity->save();
+
+            //ajoute la photo
+            $file = $request->file('image');
+            $image = new Image();
+            //remplit modèle
+            $image->activity_id = $activity->id;
+            $image->name = $file->getClientOriginalName();
+            $image->save();
+            //sauvegarde disque
+            $file->storeAs('public/img', $file->getClientOriginalName());
+            $image->save();
+
+            return to_route('show', ['activity' => $activity]);
+    }
+
     public function update(Request $request,int $id) {
         $data = $request->validate([
             'image' => 'nullable|mimes:jpg,bmp,png',
@@ -127,5 +178,12 @@ class ActivitiesController extends Controller
             
             // Return a response indicating success
             return to_route('show', ['activity' => $activity]);
+    }
+
+    public function destroy(Activity $activity) {
+        $image = Image::where('activity_id', $activity->id);
+        Image::destroy($image->id);
+
+        Activity::destroy($activity->id);
     }
 }

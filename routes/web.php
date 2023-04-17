@@ -55,5 +55,8 @@ Route::middleware([
     Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
     Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
     Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
+    Route::get('/create', [ActivitiesController::class, 'create'])->name('create');
+    Route::post('/store/{activity}', [ActivitiesController::class, 'store'])->name('store');
     Route::patch('/update/{activity}', [ActivitiesController::class, 'update'])->name('update');
+    Route::delete('/delete/{activity}', [ActivitiesController::class, 'destroy'])->name('destroy');
 });
