@@ -8,7 +8,6 @@ use \App\Models\Activity;
 use \App\Models\Image;
 use \App\Models\User;
 use \App\Models\Category;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFormRequest;
 
 class ActivitiesController extends Controller
@@ -29,7 +28,7 @@ class ActivitiesController extends Controller
                             'adresse' => $activity->address,
                             'postcode' => $activity->postcode,
                             'ville' => $activity->city,
-                            'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name
+                            'image' => Image::where('id', $activity->id)->get('name')->first()->name
                         ] ;
                     }),
                 
@@ -51,7 +50,7 @@ class ActivitiesController extends Controller
                 'adresse' => $activity->address,
                 'postcode' => $activity->postcode,
                 'ville' => $activity->city,
-                'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
+                'image' => Image::where('id', $activity->id)->get('name')->first()->name,
                 'user' => User::where('id', $activity->user_id)->get()->first(),
                 'participants' => $activity->participants
             ],
@@ -74,58 +73,39 @@ class ActivitiesController extends Controller
                 'postcode' => $activity->postcode,
                 'city' => $activity->city,
                 'country' => $activity->country,
-                'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name],
+                'image' => Image::where('id', $activity->id)->get('name')->first()->name],
 
             'categories' => Category::all()
             ]);
     }
 
-    public function update(Request $request,int $id) {
-        $data = $request->validate([
-            'image' => 'nullable|mimes:jpg,bmp,png',
-            'title' => 'required|string|max:255', 
-            'category' => 'required|integer', 
-            'dateActivite' => 'required|date_format:Y-m-d', 
-            'heureActivite' => 'required|date_format:H:i',
-            'duration' => 'required|string|date_format:H:i', 
-            'nbrParticipants' => 'required|integer|min:1', 
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
-
+    public function update(UpdateFormRequest $request,int $id) {
         $activity = Activity::find($id);
-        $date = $request->dateActivite . ' ' . $request->heureActivite;
+        $date = $request->validated()['dateActivite'] . ' ' . $request->validated()['heureActivite'];
 
             // Update the activity model with the validated data
-            $activity->title = $request->title;
-            $activity->category_id = $request->category;
+            $activity->title = $request->validated()['title'];
+            $activity->category_id = $request->validated()['category'];
             $activity->start_time = $date;
-            $activity->duration = $request->duration;
-            $activity->max_participants = $request->nbrParticipants;
-            $activity->address = $request->address;
-            $activity->city = $request->city;
-            $activity->country = $request->country;
-            $activity->description = $request->description;
+            $activity->duration = $request->validated()['duration'];
+            $activity->max_participants = $request->validated()['nbrParticipants'];
+            $activity->address = $request->validated()['address'];
+            $activity->city = $request->validated()['city'];
+            $activity->country = $request->validated()['country'];
+            $activity->description = $request->validated()['description'];
 
             // Save the updated activity
             $activity->save();
 
-            $file = $request->file('image');
-            $toDelete = Image::where('activity_id', $id)->first();
-            if( $file != null){
-                Image::destroy($toDelete->id);
-                Storage::delete('public/img/' . $toDelete->name);
-
+            if($request->validated()['image'] != null){
                 $image = new Image();
                 $image->activity_id = $activity->id; // Set the activity_id to the ID of the updated activity
-                $image->name = $file->getClientOriginalName();
-                $file->storeAs('public/img', $file->getClientOriginalName());
+                $image->name = $request->validated()['image'];
                 $image->save();
             }
             
             // Return a response indicating success
             return to_route('show', ['activity' => $activity]);
+
     }
 }

@@ -1,85 +1,8 @@
 <script setup>
-    import navbar from '@/Components/FooterNav.vue'
-    import { Link, useForm } from '@inertiajs/vue3'
-    import { computed, ref } from '@vue/reactivity'
-    import EditForm from '@/Components/EditForm.vue'
-import { reactive } from 'vue';
 
-    const imgPath = computed( () => {return '/storage/img/' + props.activity.image;});
-    const props = defineProps({
-        activity:Array,
-        categories:Array
-    })
-    const isChecked = (category) => {
-        if(category.name == props.activity.category_name) {
-            return true;
-        } 
-        else {
-            return false;
-        }
-    }
-    const hour = computed( () => {return props.activity.start_time.split(' ').slice(1)[0].split(':').slice(0,2).join(':')});
-
-    const dateFormatted = computed(() => {return props.activity.start_time.split(' ').slice(0,1)[0]});
-    const duration = computed(() => { return props.activity.duration.split(':').slice(0,2).join(':')});
-    const form = useForm({
-        _method:'PATCH',
-        'title':props.activity.title,
-        'category':props.activity.category_id,
-        'dateActivite':dateFormatted,
-        'heureActivite': hour,
-        'duration':duration,
-        'nbrParticipants':props.activity.max_participants,
-        'address':props.activity.address,
-        'city':props.activity.city,
-        'country':props.activity.country,
-        'description':props.activity.description,
-        'image': null,
-    });
-    const getFile = (event) => {
-        const file= event.target.files[0];
-        form.image = file;
-        //console.log(form);
-    }
-    const log = (input) => {
-        console.log(input);
-    }
-    const select = (index) => {
-        form.category = index;
-    }
-    const submitForm = () => {
-      // Submit form data to the server
-      form.post(`/update/${props.activity.id}`);
-    };
 </script>
 <template>
-    <div class="container bg-slate-50">
-    <header class="">
-        <!--NAVIGATION-->
-        <nav class="mb-12 items-center relative w-full px-4 py-4 bg-crystal flex text-slate-50">
-          <ul>
-            <li>
-                <Link :href="'/infos/'+activity.id">
-                <svg fill="none" class="opacity-100 h-6 w-6 " stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
-                </svg>
-                </Link>
-            </li>
-
-            <li>
-                <Link :href="'/infos/'+activity.id">
-                <button class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
-                    <svg fill="none" stroke="currentColor" class="w-4 h-4" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                    </svg>
-                </button>
-                </Link>
-            </li>
-          </ul> 
-        </nav>   
-    </header>
-    <main class="px-6">
-        <form action="/patch" @submit.prevent="submitForm" method="PATCH" enctype="multipart/form-data">
+<form action="/patch" @submit.prevent="submit" method="PATCH" enctype="multipart/form-data">
             
             <!--IMAGE-->
             <div class="px-2 mb-12 relative">
@@ -92,8 +15,7 @@ import { reactive } from 'vue';
                     </div>
                     <img class="shadow-lg shadow-pewter-blue" :src="imgPath" alt="">
                 </label>
-                <input @change="getFile" type="file" id="image" name="image" class="" accept="image/png, image/jpeg">
-                <div v-if="form.errors.image">{{ form.errors.image }}</div>
+                <input type="file" id="image" name="image" class="hidden" accept="image/png, image/jpeg">
                 
             </div>
             
@@ -107,8 +29,7 @@ import { reactive } from 'vue';
                 </div> 
            </label>
             <div class="relative mb-6">
-                <input v-model="form.title" type="text" id="titre" name="titre" class="rounded-lg bg-crystal pr-4 py-1 w-full">
-                <div v-if="form.errors.title">{{ form.errors.title }}</div>
+                <input type="text" id="titre" name="titre" class="rounded-lg bg-crystal pr-4 py-1 w-full" :value="activity.title">
             </div>
             
             <!--CATEGORIES-->
@@ -120,12 +41,11 @@ import { reactive } from 'vue';
                     </svg>Categories
                 </legend>
                 <div v-for="category in categories" class="mb-5">
-                    <input @click="select(category.id)" :value="category.id" type="radio" name="category" :id="category.name" :checked="isChecked(category)" class="hidden peer">
+                    <input type="radio" name="category" :id="category.name" :value="category.name" :checked="isChecked(category)" class="hidden peer">
                     <label :for="category.name" class="bg-crystal mr-2 text-slate-600 shadow-sm px-3 py-2 rounded-lg peer-checked:bg-jellybeanblue peer-checked:text-slate-50 shadow-pewter-blue">
                     {{ category.name }}
                     </label>
                 </div>
-                <div v-if="form.errors.category">{{ form.errors.category }}</div>
             </fieldset>
 
             <!--DATE_ACTIVITE-->
@@ -138,8 +58,8 @@ import { reactive } from 'vue';
                 </div> 
             </label>
             <div class="mb-6">
-                <input v-model="form.dateActivite" type="date" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dateActivite" name="dateActivite" min="1970-10-27" max="2024-10-27">
-                <div v-if="form.errors.dateActivite">{{ form.errors.dateActivite }}</div>
+                <input type="date" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dateActivite" name="dateActivite" :value="dateFormatted" min="1970-10-27" max="2024-10-27">
+                
             </div>
 
             <!--HEURE_ACTIVITE-->
@@ -152,8 +72,7 @@ import { reactive } from 'vue';
                 </div> 
             </label>
             <div class="mb-6">
-                <input v-model="form.heureActivite" type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="heureActivite" name="heureActivite">
-                <div v-if="form.errors.heureActivite">{{ form.errors.heureActivite }}</div>
+                <input type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="heureActivite" name="heureActivite" :value="hour">
             </div>
 
             <!--DUREE_ACTIVITE-->
@@ -166,8 +85,7 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="relative mb-6">
-                <input v-model="form.duration" type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dureeActivite" name="dureeActivite" min="01:00" max="12:00">
-                <div v-if="form.errors.duration">{{ form.errors.duration }}</div>
+                <input type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dureeActivite" name="dureeActivite" :value="duration" min="01:00" max="12:00">
             </div>
 
             <!--NOMBRE_PARTICIPANTS-->  
@@ -180,12 +98,12 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="mb-6">
-                <input v-model="form.nbrParticipants" type="number" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="nbrParticipants" name="nbrParticipants" min="1" max="25">
-                <div v-if="form.errors.nbrParticipants">{{ form.errors.nbrParticipants }}</div>
+                <input type="number" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="nbrParticipants" name="nbrParticipants" :value="activity.max_participants" min="1" max="25">
+                
             </div>
 
             <!--ADRESSE-->
-            <label for="address" class="text-slate-900 font-bold mb-4 text-sm relative">
+            <label for="adresse" class="text-slate-900 font-bold mb-4 text-sm relative">
                 <div class="w-full">
                     Adresse
                     <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -194,12 +112,11 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="mb-6">
-                <input v-model="form.address" type="text" class="rounded-lg bg-crystal relative px-r py-1 w-full" id="address" name="address">
-                <div v-if="form.errors.address">{{ form.errors.address }}</div>
+                <input type="text" class="rounded-lg bg-crystal relative px-r py-1 w-full" id="adresse" name="adresse" :value="activity.adresse">
             </div>
 
             <!--VILLE-->
-            <label for="city" class="text-slate-900 font-bold mb-4 text-sm relative">
+            <label for="ville" class="text-slate-900 font-bold mb-4 text-sm relative">
                 <div class="w-full">
                     Ville
                     <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -208,12 +125,11 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="mb-6">
-                <input v-model="form.city" type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="city" name="city">
-                <div v-if="form.errors.city">{{ form.errors.city }}</div>
+                <input type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="ville" name="ville" :value="activity.ville">
             </div>
 
             <!--PAYS-->
-            <label for="country" class="text-slate-900 font-bold mb-4 text-sm relative">
+            <label for="pays" class="text-slate-900 font-bold mb-4 text-sm relative">
                 <div class="w-full">
                     Pays
                     <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -222,8 +138,8 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="mb-6">
-                <input v-model="form.country" type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="country" name="country">
-                <div v-if="form.errors.country">{{ form.errors.country }}</div>
+                <input type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="pays" name="pays" :value="activity.pays">
+               
             </div>
 
             <!--DESCRIPTION ACTIVITE-->
@@ -236,9 +152,8 @@ import { reactive } from 'vue';
                 </div>
             </label>
             <div class="mb-6">
-                <textarea v-model="form.description" maxlength="250" class="rounded-lg bg-crystal relative h-52 pr-10 py-1 w-full" id="description" name="description">
+                <textarea maxlength="250" class="rounded-lg bg-crystal relative h-52 pr-10 py-1 w-full" id="description" name="description">{{ activity.description }}
                 </textarea>
-                <div v-if="form.errors.description">{{ form.errors.description }}</div>
             </div>
             <div class="mb-6 flex">
                 <button class="text-center mr-3 rounded-lg bg-jellybeanblue font-medium text-slate-50 py-2 px-4" type="submit">
@@ -249,34 +164,4 @@ import { reactive } from 'vue';
                 </button>
             </div>
         </form>
-    </main>
-    <footer>
-        <navbar></navbar>
-    </footer>
-    </div>
 </template>
-<style>
-   input[type="date"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    color: transparent;
-    background: transparent;
-}
-
-    input[type="time"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    color: transparent;
-    background: transparent;
-}
-</style>

@@ -55,4 +55,5 @@ Route::middleware([
     Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
     Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
     Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
+    Route::patch('/update/{activity}', [ActivitiesController::class, 'update'])->name('update');
 });
