@@ -80,7 +80,7 @@ const imgPath = (activity) => {
             <section class="mt-14 h-auto min-h-full mb-5">
                 <h2 class="pl-6 text-slate-50 font-bold text-xl mb-5">activités à proximité</h2>
                 <div class="flex overflow-x-scroll pb-10">
-                    <Card v-for="activity in activities" :item="activity" :img="imgPath(activity)"></Card>
+                    <Card v-for="activity in activities" :activity="activity" :img="imgPath(activity)"></Card>
                     <div class="bg-slate-50/50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"></path>
                         </svg>
@@ -91,7 +91,7 @@ const imgPath = (activity) => {
             <section class="mb-5">
               <h2 class="pl-6 text-slate-50 font-bold text-xl mb-5">Prochaines activités</h2>
               <div class="flex overflow-x-scroll pb-10 relative">
-                <Card v-for="activity in activities" :item="activity" :img="imgPath(activity)"></Card>
+                <Card v-for="activity in activities" :activity="activity" :img="imgPath(activity)"></Card>
                     <div class="bg-slate-50/50 text-slate-800 rounded-full sticky h-1/2 mt-32 p-4 right-0"><svg fill="none" class="h-12 w-12" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"></path>
                         </svg>

@@ -40,12 +40,12 @@ class BookmarksController extends Controller
 
         $bookmark->save();
 
-        return to_route('dashboard');
+        return 'yes' ;
     }
 
     public function destroy(Activity $activity) {
         $bookmark = Bookmark::where('user_id', auth()->user()->id)->where('activity_id', $activity->id)->get()->first();
         $bookmark->delete();
-        return to_route('dashboard');
+        return 'yes';
     }
 }
