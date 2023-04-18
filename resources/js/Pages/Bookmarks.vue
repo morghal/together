@@ -6,15 +6,6 @@
     const props = defineProps({
     activities: Array,
     });
-
-    const imgPath = (activity) => {
-    let path = '';
-    
-            path = 'storage/img/' + activity.image;
-            console.log(activity.image);
-            return path;
-        
-}
 </script>
 <template>
     <TogetherLayout>
@@ -59,7 +50,7 @@
         <!--/HEADER-->
         <main class="mt-14 mb-6">
                 <h2 class="pl-6 text-slate-50 font-bold text-xl mb-6">Activités</h2>
-                <Card v-for="activity in activities" :activity="activity" :img="imgPath(activity)" class="mb-8 w-4/6"></Card>
+                <Card v-for="activity in activities" :activity="activity" :img="'storage/img/' + activity.image" class="mb-8 w-4/6"></Card>
                 <div v-if="activities.length === 0" class="bg-transparent h-screen"></div>
                 <div v-else="" class="h-10 bg-transparent"></div>
         </main>

@@ -2,51 +2,15 @@
 import { Link } from '@inertiajs/vue3'
 import axios from 'axios';
 import { ref, computed } from 'vue'
+import { useActivityStore } from '@/stores/activityStore';
+import { onMounted } from 'vue';
+
+const store = useActivityStore();
 
 const props = defineProps({
   activity:Object,
   img:String
 });
-
-const formatTime = () => {
-  console.log(props.activity.bookmarked)
-  const toFormat = new Date(props.activity.start_time);
-  const newDate = toFormat.toLocaleString('fr-FR', { month: 'long', day: 'numeric' });
-  return newDate;
-}
-
-
-const url = computed( () => { return '/infos/' + props.activity.id});
-
-const addToBookmarks = () => {
-  axios.post(`/add/${props.activity.id}/favoris`, {
-    activity:props.activity 
-  })
-  .then(response => {
-    props.activity.bookmarked = true;
-    console.log(response);
-
-  })
-  .catch(error => {
-    console.error(error);
-  });
-}
-
-const deleteBookmark = () => {
-  axios.delete(`/destroy/${props.activity.id}/favoris`, {
-    activity:props.activity 
-  })
-  .then(response => {
-    props.activity.bookmarked = false;
-    console.log(response);
-
-  })
-  .catch(error => {
-    console.error(error);
-  });
-}
-
-
 
 </script>
 <template>
@@ -56,17 +20,17 @@ const deleteBookmark = () => {
                     <!--CATEGORIE-->
                     <div class="text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">{{ activity.category_name }}</div>
                     <!--BOUTON FAVORIS-->
-                    <button v-if="!activity.bookmarked" @click.prevent="addToBookmarks()" href="" class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                    <button v-if="!activity.bookmarked" @click.prevent="store.addToBookmarks(activity)" href="" class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 "> 
                         <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
                       </button>
-                    <button v-else="" href="" @click.prevent="deleteBookmark()" class="rounded-full bg-jellybeanblue text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                    <button v-else="" href="" @click.prevent="store.deleteBookmark(activity)" class="rounded-full bg-jellybeanblue text-center absolute p-2 right-4 top-4 text-slate-800 "> 
                         <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
                       </button>
-                    <div class="text-slate-50 font-bold absolute top-28 text-xs right-4">{{ formatTime() }}</div>
+                    <div class="text-slate-50 font-bold absolute top-28 text-xs right-4">{{ store.dateTime(activity) }}</div>
                     <img class="w-full rounded-t-xl" height="125" :src="img" alt="Cover Photo">
                     <div class="px-6 py-4">
                       <h3 class="font-bold text-md mb-2 text-slate-50">{{activity.title }}</h3>

@@ -2,55 +2,24 @@
   import { computed } from '@vue/reactivity';
   import navbar from '@/Components/FooterNav.vue'
   import { Link } from '@inertiajs/vue3';
+  import { useActivityStore } from '@/stores/activityStore';
+import { onMounted } from 'vue';
+
+const store = useActivityStore();
 
   const props = defineProps({
     activity:Object
   })
 
-  const imgPath = computed( () => {return '/storage/img/' + props.activity.image;});
+  const loadActivity = () => {
+          store.activity = props.activity;
+      }
 
-  
-  const hour = computed( () => {return new Date(props.activity.start_time).getHours() });
-  
-  const minutes = computed( () => {return new Date(props.activity.start_time).getMinutes() });
-
-  const photo_path = computed( () => {return '/storage/users/' + props.activity.user.profile_photo_path });
-
-  const photo_participant = (participant) => {return '/storage/users/' + participant.profile_photo_path };
-
-  const formatTime = () => {
-      const toFormat = new Date(props.activity.start_time);
-      const newDate = toFormat.toLocaleString('fr-FR', { month: 'long', day: 'numeric' });
-      return newDate;
-  }
-
-  const addToBookmarks = () => {
-  axios.post(`/add/${props.activity.id}/favoris`, {
-    activity:props.activity 
+  onMounted(()=>{
+    loadActivity();
+    console.log(store.activity);
   })
-  .then(response => {
-    props.activity.bookmarked = true;
-    console.log(response);
 
-  })
-  .catch(error => {
-    console.error(error);
-  });
-}
-
-const deleteBookmark = () => {
-  axios.delete(`/destroy/${props.activity.id}/favoris`, {
-    activity:props.activity 
-  })
-  .then(response => {
-    props.activity.bookmarked = false;
-    console.log(response);
-
-  })
-  .catch(error => {
-    console.error(error);
-  });
-}
 </script>
 <template>
     <article class="bg-gradient-to-b from-moonstone to-[#539ABB]">
@@ -66,12 +35,12 @@ const deleteBookmark = () => {
             </li>
 
             <li>
-                    <button v-if="!activity.bookmarked" @click.prevent="addToBookmarks()" href="" class="absolute right-14 top-3 mr-1 rounded-full p-2 bg-slate-50 text-center text-slate-800 "> 
+                    <button v-if="!activity.bookmarked" @click.prevent="store.addToBookmarks(activity)" href="" class="absolute right-14 top-3 mr-1 rounded-full p-2 bg-slate-50 text-center text-slate-800 "> 
                         <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
                       </button>
-                    <button v-else="" href="" @click.prevent="deleteBookmark()" class="bg-jellybeanblue absolute right-14 top-3 mr-1 rounded-full p-2 text-center"> 
+                    <button v-else="" href="" @click.prevent="store.deleteBookmark(activity)" class="bg-jellybeanblue absolute right-14 top-3 mr-1 rounded-full p-2 text-center"> 
                         <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
@@ -91,7 +60,7 @@ const deleteBookmark = () => {
           </ul> 
         </nav>
         
-        <img class="h-max" height="400" :src="imgPath" alt="Cover Photo">
+        <img class="h-max" height="400" :src="store.imgPath" alt="Cover Photo">
         <div class="absolute bottom-0 w-full px-4 py-4 bg-neutral-900/50 text-slate-50">
             <h1 class="text-lg text-slate-50 font-bold mb-1">{{ activity.title}}</h1>
             <div class="bg-slate-50 text-sm px-2 py-1 font-medium text-caribbeangreen rounded-md w-fit flex items-center">
@@ -103,14 +72,14 @@ const deleteBookmark = () => {
     </header>
     <main class="">
         <div class="flex justify-between bg-jellybeanblue px-6 py-4">
-            <div class="text-base font-semibold text-slate-50">{{ formatTime() }}</div>
+            <div class="text-base font-semibold text-slate-50">{{ store.dateTime(activity) }}</div>
             <div class="text-jellybeanblue font-semibold text-xs bg-slate-50 rounded-lg py-1 px-2">{{ activity.category_name }}</div>
         </div>
         <section class="px-6">
             <article>
                 <div class="py-10">
                     <h1 class="text-lg text-slate-50 font-bold mb-4">{{ activity.title }}</h1>
-                    <div class="text-xs text-slate-50 font-normal mb-4">{{ formatTime() +', à '+ hour +'h'+minutes}}</div>
+                    <div class="text-xs text-slate-50 font-normal mb-4">{{ store.dateTime(activity) +', à '+ store.hour +'h'+store.minutes}}</div>
                     <p class="text-sm text-slate-50 font-medium">{{ activity.description }}</p>
                 </div>
                 <div class="flex mb-4 items-center text-caribbeangreen">
@@ -124,7 +93,7 @@ const deleteBookmark = () => {
             <div class="flex flex-col content-center">
               <!--ORGANISATEUR-->
                 <div class="text-slate-50 text-xs font-medium">Organisé par</div>
-                <img class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="photo_path" alt="">
+                <img class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="store.photo_path" alt="">
             </div>
             <div class="text-slate-50 font-semibold text-xs">{{ activity.user.pseudo + " ("+activity.user.firstname+ " "+ activity.user.lastname+")" }}</div>
             <div class="flex mb-10"> <!--5 étoiles-->
@@ -136,7 +105,7 @@ const deleteBookmark = () => {
                     <!--PARTICIPANTS-->
                     <div class="text-slate-50 text-xs font-medium mb-2"> {{activity.nbr_participants+'/'+activity.max_participants+' participants'}}</div>
                     <div class="flex flex-wrap mb-6">
-                        <img v-for='participant in activity.participants' class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="photo_participant(participant)" alt="">
+                        <img v-for='participant in activity.participants' class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="store.photo_participant(participant)" alt="">
                     </div>
                     <button class="bg-caribbeangreen w-1/3 rounded-full py-1 text-xs mb-6 font-medium text-slate-50">S'inscrire</button>
         </section>
