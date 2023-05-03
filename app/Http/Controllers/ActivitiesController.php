@@ -15,6 +15,27 @@ use Illuminate\Support\Facades\Auth;
 
 class ActivitiesController extends Controller
 {
+    //Fonction de calcul de distance entre deux points
+    protected function distance($userLatitude, $userLongitude, $activityLatitude, $activityLongitude) {
+        $earth_radius = 6371; // en km
+    
+        $userLat = deg2rad($userLatitude);
+        $userLon = deg2rad($userLongitude);
+    
+        $activityLat = deg2rad($activityLatitude);
+        $activityLon = deg2rad($activityLongitude);
+    
+        $dLat = $activityLat - $userLat;
+        $dLon = $activityLon - $userLon;
+    
+        $a = sin($dLat/2) * sin($dLat/2) + cos($userLat) * cos($activityLat) * sin($dLon/2) * sin($dLon/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+    
+        $distance = $earth_radius * $c;
+    
+        return $distance;
+    }
+
     public function dashboard(){
         
         return Inertia::render('Index', [
@@ -25,27 +46,6 @@ class ActivitiesController extends Controller
 
     
     public function getActivitiesWithDistance(Request $request) {
-
-        //Fonction de calcul de distance entre deux points
-            function distance($userLatitude, $userLongitude, $activityLatitude, $activityLongitude) {
-                $earth_radius = 6371; // en km
-            
-                $userLat = deg2rad($userLatitude);
-                $userLon = deg2rad($userLongitude);
-            
-                $activityLat = deg2rad($activityLatitude);
-                $activityLon = deg2rad($activityLongitude);
-            
-                $dLat = $activityLat - $userLat;
-                $dLon = $activityLon - $userLon;
-            
-                $a = sin($dLat/2) * sin($dLat/2) + cos($userLat) * cos($activityLat) * sin($dLon/2) * sin($dLon/2);
-                $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-            
-                $distance = $earth_radius * $c;
-            
-                return $distance;
-            }
 
           //Filtre et ajout de propriétés
           $activities = Activity::with('user')->with('category')->get();
@@ -74,7 +74,7 @@ class ActivitiesController extends Controller
           return response()->json($filtered);
         }
 
-    public function show(Activity $activity, float $distance) {
+    public function show(Activity $activity) {
         
         $bookmarked=false;
         $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', auth()->user()->id)->get();
@@ -93,6 +93,7 @@ class ActivitiesController extends Controller
                 'rating' => $activity->user->rating,
                 'start_time' => $activity->start_time,
                 'description' => $activity->description,
+                'distance' => 0,
                 'adresse' => $activity->address,
                 'postcode' => $activity->postcode,
                 'ville' => $activity->city,
@@ -163,6 +164,7 @@ class ActivitiesController extends Controller
             'duration' => 'required|string|date_format:H:i', 
             'nbrParticipants' => 'required|integer|min:1', 
             'address' => 'required|string|max:255',
+            'postcode' => 'required|integer',
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'description' => 'required|string',
@@ -171,13 +173,38 @@ class ActivitiesController extends Controller
         $activity = new Activity;
         $date = $request->dateActivite . ' ' . $request->heureActivite;
 
+        //requête API
+        $address = urlencode($request->address . ' ' . $request->postcode . ' ' . $request->city . ' ' . $request->country);
+    
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+          CURLOPT_URL => "https://nominatim.openstreetmap.org/search?format=json&q=" . $address,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_POSTFIELDS => "",
+          CURLOPT_REFERER => 'http://127.0.0.1:8000'
+        ]);
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl); 
+        curl_close($curl);
+        $resp = json_decode($response, true);
+
             // Remplit le modèle de données
             $activity->title = $request->title;
             $activity->category_id = $request->category;
+            $activity->latitude = $resp[0]['lat'];
+            $activity->longitude = $resp[0]['lon'];
             $activity->start_time = $date;
             $activity->duration = $request->duration;
             $activity->max_participants = $request->nbrParticipants;
             $activity->address = $request->address;
+            $activity->postcode = $request->postcode;
             $activity->city = $request->city;
             $activity->country = $request->country;
             $activity->description = $request->description;

@@ -52,7 +52,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
-    Route::get('/infos/{activity}/{distance}', [ActivitiesController::class, 'show'])->name('show');
+    Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
     Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
     Route::get('/create', [ActivitiesController::class, 'create'])->name('create');
     Route::post('/store/{activity}', [ActivitiesController::class, 'store'])->name('store');

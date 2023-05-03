@@ -2,13 +2,20 @@
   import navbar from '@/Components/FooterNav.vue'
   import { Link } from '@inertiajs/vue3';
   import { useActivityStore } from '@/stores/activityStore';
+  import { useLocationStore } from '@/stores/locationStore';
 import { onMounted, computed } from 'vue';
 
 const store = useActivityStore();
+const locationStore = useLocationStore();
 
   const props = defineProps({
     activity:Object
   })
+
+  async function getDistance() {
+    const coords =  await locationStore.coords();
+    store.setDistance(coords);
+  }
 
   const loadActivity = () => {
           store.activity = props.activity;
@@ -17,6 +24,7 @@ const store = useActivityStore();
   const photo_path = computed( () =>{ return '/storage/users/' + props.activity.user.profile_photo_path})
   onMounted(()=>{
     loadActivity();
+    getDistance();
   })
 
 </script>

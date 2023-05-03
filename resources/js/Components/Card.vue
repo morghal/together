@@ -63,7 +63,7 @@ onMounted(() => {
                       </p>
                     </div>
                     <div class="mx-auto w-2/4">
-                            <Link class="" :href="`/infos/${activity.id}/${activity.distance}`" method="get" as="button">
+                            <Link class="" :href="`/infos/${activity.id}`" method="get" as="button">
                             <button class="bg-caribbeangreen w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
                         Infos
                             </button>
