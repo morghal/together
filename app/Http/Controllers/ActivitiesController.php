@@ -36,11 +36,15 @@ class ActivitiesController extends Controller
         return $distance;
     }
 
+    public function calculateDistance(Request $request) {
+        $distance = round($this->distance($request->latitudeUser, $request->longitudeUser, $request->latitudeActivity, $request->longitudeActivity),2);
+        return $distance;
+    }
+
     public function dashboard(){
         
         return Inertia::render('Index', [
-            'categories' => Category::all(),
-       //nominateam         
+            'categories' => Category::all(),      
     ]);
     }
 
@@ -53,7 +57,7 @@ class ActivitiesController extends Controller
           
           foreach($activities as $activity) {
             //Calcule la distance de l'activité, à 2 décimales
-            $activity->distance = round(distance($request->latitude,$request->longitude,$activity->latitude,$activity->longitude),2);
+            $activity->distance = round($this->distance($request->latitude,$request->longitude,$activity->latitude,$activity->longitude),2);
 
             //Ajoute l'activité au tableau filtered si elle respecte la condition de distance < 100
             if($activity->distance < 100) {
@@ -96,8 +100,10 @@ class ActivitiesController extends Controller
                 'distance' => 0,
                 'adresse' => $activity->address,
                 'postcode' => $activity->postcode,
+                'latitude' => $activity->latitude,
+                'longitude' => $activity->longitude,
                 'ville' => $activity->city,
-                'distance' => $distance,
+                'distance' => 0,
                 'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
                 'user' => User::where('id', $activity->user_id)->get()->first(),
                 'participants' => $activity->participants,

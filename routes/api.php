@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance'])->name('activities');
+
+Route::get('/distance', [ActivitiesController::class, 'calculateDistance'])->name('distance');

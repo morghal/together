@@ -34,6 +34,20 @@ export const useActivityStore = defineStore('activity', () => {
     });
   }
 
+  function setDistance(position, acti) {
+    axios.get('/api/distance', {
+      params: {
+        latitudeUser:position.latitude,
+        longitudeUser:position.longitude,
+        latitudeActivity:acti.latitude,
+        longitudeActivity:acti.longitude
+      }
+    })
+    .then(response => {
+      return acti.distance = response.data;
+    })
+  }
+
  function photo_participant(participant) {
     return '/storage/users/' + participant.profile_photo_path
   }
@@ -79,5 +93,5 @@ function deleteBookmark(target) {
   });
 }
   
-  return { activity, activities, imgPath, hour, minutes, getActivitiesSortedByDate, getActivitiesSortedByDistance, fetchActivities, photo_participant, dateTime,loadActivity, loadActivities, addToBookmarks, deleteBookmark};
+  return { activity, activities, imgPath, hour, minutes, setDistance, getActivitiesSortedByDate, getActivitiesSortedByDistance, fetchActivities, photo_participant, dateTime,loadActivity, loadActivities, addToBookmarks, deleteBookmark};
 });

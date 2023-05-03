@@ -14,7 +14,7 @@ const locationStore = useLocationStore();
 
   async function getDistance() {
     const coords =  await locationStore.coords();
-    store.setDistance(coords);
+    store.setDistance(coords, props.activity);
   }
 
   const loadActivity = () => {
