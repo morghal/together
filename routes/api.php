@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance'])->name('activities');
+Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance'])->middleware(['auth:sanctum',config('jetstream.auth_session'),
+'verified',]);
 
 Route::get('/distance', [ActivitiesController::class, 'calculateDistance'])->name('distance');

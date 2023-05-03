@@ -19,7 +19,6 @@ use \App\Http\Controllers\BookmarksController;
 */
 
 Route::get('/', function () {
-    //return Inertia::render('Index');
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -30,7 +29,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/profile', function () {
+/*Route::get('/profile', function () {
     return Inertia::render('TemplateProfile');
 });
 
@@ -43,7 +42,7 @@ Route::get('/list', [ActivitiesController::class, 'list']);
 Route::get('/filter', function () {
     return Inertia::render('Filter');
 });
-
+*/
 
 
 Route::middleware([
@@ -52,11 +51,12 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [ActivitiesController::class, 'dashboard'])->name('dashboard');
+    Route::get('/activities', [ActivitiesController::class, 'getActivitiesWithDistance']);
     Route::get('/infos/{activity}', [ActivitiesController::class, 'show'])->name('show');
-    Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
+    //Route::get('/edit/{activity}', [ActivitiesController::class, 'edit']);
     Route::get('/create', [ActivitiesController::class, 'create'])->name('create');
     Route::post('/store/{activity}', [ActivitiesController::class, 'store'])->name('store');
-    Route::patch('/update/{activity}', [ActivitiesController::class, 'update'])->name('update');
+    //Route::patch('/update/{activity}', [ActivitiesController::class, 'update'])->name('update');
     Route::delete('/delete/{activity}', [ActivitiesController::class, 'destroy'])->name('destroy');
     Route::get('/favoris', [BookmarksController::class, 'index'])->name('bookmarks');
     Route::post('/add/{activity}/favoris', [BookmarksController::class, 'store'])->name('newBookmark');

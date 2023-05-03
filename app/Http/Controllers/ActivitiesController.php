@@ -59,21 +59,21 @@ class ActivitiesController extends Controller
             //Calcule la distance de l'activité, à 2 décimales
             $activity->distance = round($this->distance($request->latitude,$request->longitude,$activity->latitude,$activity->longitude),2);
 
-            //Ajoute l'activité au tableau filtered si elle respecte la condition de distance < 100
+            //Ajoute l'activité au tableau filtered si elle respecte la condition de distance < 100km
             if($activity->distance < 100) {
                 //Ajoute des propriétés supplémentaires
-                $activity->bookmarked = false;
-                $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', Auth::id())->get();
-                    if (count($bookmark) === 1) {
+                $bookmark = Bookmark::where('user_id', auth()->user()->id )->where('activity_id',$activity->id)->get();
+                    if (count($bookmark) != 0) {
                         $activity->bookmarked = true;
                     }
+                    else {
+                        $activity->bookmarked = false;
+                    }
                 $activity->image = Image::where('activity_id', $activity->id)->first();
-                
                 //Ajoute au tableau filtered
                 array_push($filtered, $activity);
             }
           }
-
           //Retourne les activités filtrées
           return response()->json($filtered);
         }

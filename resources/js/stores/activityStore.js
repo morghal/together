@@ -20,13 +20,14 @@ export const useActivityStore = defineStore('activity', () => {
     })
 
   function fetchActivities(position) {
-    axios.get('/api/activities', {
+    axios.get('/activities', {
       params: {
         latitude:position.latitude,
         longitude:position.longitude
       }
     })
     .then(response => {
+      console.log(response.data);
       activities.value = response.data;
     })
     .catch(error => {
