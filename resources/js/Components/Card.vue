@@ -1,7 +1,5 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
-import axios from 'axios';
-import { ref, computed } from 'vue'
 import { useActivityStore } from '@/stores/activityStore';
 import { onMounted } from 'vue';
 
@@ -12,21 +10,25 @@ const props = defineProps({
   img:String
 });
 
+onMounted(() => {
+
+})
+
 </script>
 <template>
                   <!--CARD-->
               
                   <div class="relative shadow-lg shadow-slate-700/50 min-w-[225px] ml-6 mr-3 rounded-xl pb-5 bg-[#4B8798] " width="225">
                     <!--CATEGORIE-->
-                    <div class="text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">{{ activity.category_name }}</div>
+                    <div class="text-xs py-1 px-2 absolute left-4 top-4 rounded-lg text-center font-bold bg-slate-50 text-jellybeanblue">{{ activity.category.name }}</div>
                     <!--BOUTON FAVORIS-->
-                    <button v-if="!activity.bookmarked" @click.prevent="store.addToBookmarks(activity)" href="" class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 "> 
-                        <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <button v-if="activity.bookmarked" href="" @click.prevent="store.deleteBookmark(activity)" class="rounded-full bg-jellybeanblue text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                        <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
                       </button>
-                    <button v-else="" href="" @click.prevent="store.deleteBookmark(activity)" class="rounded-full bg-jellybeanblue text-center absolute p-2 right-4 top-4 text-slate-800 "> 
-                        <svg fill="none" class="w-4 h-4 text-gargoylegas" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <button v-else="" @click.prevent="store.addToBookmarks(activity)" href="" class="rounded-full bg-slate-50 text-center absolute p-2 right-4 top-4 text-slate-800 "> 
+                        <svg fill="none" class="w-4 h-4" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"></path>
                         </svg>
                       </button>
@@ -38,15 +40,15 @@ const props = defineProps({
                         <svg fill="currentColor" class="icone h-6 w-6 inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
                         </svg>
-                        <p class="text-base inline"> {{ activity.ville + ', 10km' }}</p>
+                        <p class="text-base inline"> {{ `${activity.city}, ${activity.distance}km` }}</p>
                       </div>
                 
                       <p class="text-slate-50 text-base mb-2">
                         <svg fill="currentColor" class="text-slate-50 inline  h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path clip-rule="evenodd" fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"></path>
-                        </svg> <span class="pr-2">{{ activity.user }}</span>
+                        </svg> <span class="pr-2">{{ activity.user.pseudo }}</span>
 
                         <!--5 étoiles-->
-                        <div><svg fill="currentColor" v-for="(star, index) in 5" :key="index" :class="index < activity.rating ? 'text-gargoylegas' : 'text-slate-50'" class="inline align-text-top h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <div><svg fill="currentColor" v-for="(star, index) in 5" :key="index" :class="index < activity.user.rating ? 'text-gargoylegas' : 'text-slate-50'" class="inline align-text-top h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"></path>
                         </svg>
                         </div>
@@ -61,7 +63,7 @@ const props = defineProps({
                       </p>
                     </div>
                     <div class="mx-auto w-2/4">
-                            <Link class="" :href="'/infos/' + activity.id" method="get" as="button">
+                            <Link class="" :href="`/infos/${activity.id}/${activity.distance}`" method="get" as="button">
                             <button class="bg-caribbeangreen w-full text-slate-50 font-medium rounded-xl py-1 px-6 mx-auto">
                         Infos
                             </button>

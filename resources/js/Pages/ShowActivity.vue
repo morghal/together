@@ -1,9 +1,8 @@
 <script setup>
-  import { computed } from '@vue/reactivity';
   import navbar from '@/Components/FooterNav.vue'
   import { Link } from '@inertiajs/vue3';
   import { useActivityStore } from '@/stores/activityStore';
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 
 const store = useActivityStore();
 
@@ -15,9 +14,9 @@ const store = useActivityStore();
           store.activity = props.activity;
       }
 
+  const photo_path = computed( () =>{ return '/storage/users/' + props.activity.user.profile_photo_path})
   onMounted(()=>{
     loadActivity();
-    console.log(store.activity);
   })
 
 </script>
@@ -66,7 +65,7 @@ const store = useActivityStore();
             <div class="bg-slate-50 text-sm px-2 py-1 font-medium text-caribbeangreen rounded-md w-fit flex items-center">
                 <svg fill="currentColor" class="h-4 w-4 mr-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
-                </svg>{{ activity.ville + ', à 10km' }}
+                </svg>{{ activity.ville + ', à ' + activity.distance + ' km' }}
             </div>
         </div>
     </header>
@@ -93,7 +92,7 @@ const store = useActivityStore();
             <div class="flex flex-col content-center">
               <!--ORGANISATEUR-->
                 <div class="text-slate-50 text-xs font-medium">Organisé par</div>
-                <img class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="store.photo_path" alt="">
+                <img class="rounded-full shadow-md shadow-slate-700/50 m-2 h-12 w-12" :src="photo_path" alt="">
             </div>
             <div class="text-slate-50 font-semibold text-xs">{{ activity.user.pseudo + " ("+activity.user.firstname+ " "+ activity.user.lastname+")" }}</div>
             <div class="flex mb-10"> <!--5 étoiles-->

@@ -11,44 +11,70 @@ use \App\Models\Category;
 use \App\Models\Bookmark;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ActivitiesController extends Controller
 {
     public function dashboard(){
-        $activities = Activity::all();
-        $bookmarked = false;
-       
+        
         return Inertia::render('Index', [
-            'activities' => $activities->map(function($activity) {
-                    
-                    $bookmarked=false;
-                    $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', auth()->user()->id)->get();
-                    if (count($bookmark) != 0) {
-                        $bookmarked = true;
-                    }
-                      
-
-                        return [
-                            'id' => $activity->id,
-                            'title' => $activity->title,
-                            'nbr_participants' => $activity->nbr_participants,
-                            'max_participants' => $activity->max_participants,
-                            'category_name' => $activity->category->name,
-                            'user' => $activity->user->pseudo,
-                            'rating' => $activity->user->rating,
-                            'start_time' => $activity->start_time,
-                            'adresse' => $activity->address,
-                            'postcode' => $activity->postcode,
-                            'ville' => $activity->city,
-                            'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
-                            'bookmarked' => $bookmarked
-                        ] ;
-                    }),
-                
+            'categories' => Category::all(),
+       //nominateam         
     ]);
     }
 
-    public function show(Activity $activity) {
+    
+    public function getActivitiesWithDistance(Request $request) {
+
+        //Fonction de calcul de distance entre deux points
+            function distance($userLatitude, $userLongitude, $activityLatitude, $activityLongitude) {
+                $earth_radius = 6371; // en km
+            
+                $userLat = deg2rad($userLatitude);
+                $userLon = deg2rad($userLongitude);
+            
+                $activityLat = deg2rad($activityLatitude);
+                $activityLon = deg2rad($activityLongitude);
+            
+                $dLat = $activityLat - $userLat;
+                $dLon = $activityLon - $userLon;
+            
+                $a = sin($dLat/2) * sin($dLat/2) + cos($userLat) * cos($activityLat) * sin($dLon/2) * sin($dLon/2);
+                $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+            
+                $distance = $earth_radius * $c;
+            
+                return $distance;
+            }
+
+          //Filtre et ajout de propriétés
+          $activities = Activity::with('user')->with('category')->get();
+          $filtered = [];
+          
+          foreach($activities as $activity) {
+            //Calcule la distance de l'activité, à 2 décimales
+            $activity->distance = round(distance($request->latitude,$request->longitude,$activity->latitude,$activity->longitude),2);
+
+            //Ajoute l'activité au tableau filtered si elle respecte la condition de distance < 100
+            if($activity->distance < 100) {
+                //Ajoute des propriétés supplémentaires
+                $activity->bookmarked = false;
+                $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', Auth::id())->get();
+                    if (count($bookmark) === 1) {
+                        $activity->bookmarked = true;
+                    }
+                $activity->image = Image::where('activity_id', $activity->id)->first();
+                
+                //Ajoute au tableau filtered
+                array_push($filtered, $activity);
+            }
+          }
+
+          //Retourne les activités filtrées
+          return response()->json($filtered);
+        }
+
+    public function show(Activity $activity, float $distance) {
         
         $bookmarked=false;
         $bookmark = Bookmark::where('activity_id', $activity->id)->where('user_id', auth()->user()->id)->get();
@@ -70,6 +96,7 @@ class ActivitiesController extends Controller
                 'adresse' => $activity->address,
                 'postcode' => $activity->postcode,
                 'ville' => $activity->city,
+                'distance' => $distance,
                 'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
                 'user' => User::where('id', $activity->user_id)->get()->first(),
                 'participants' => $activity->participants,

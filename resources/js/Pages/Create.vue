@@ -2,6 +2,7 @@
     import navbar from '@/Components/FooterNav.vue'
     import { Link, useForm } from '@inertiajs/vue3'
     import { computed, ref } from '@vue/reactivity'
+    import { router } from '@inertiajs/vue3'
 
     const props = defineProps({
         categories:Array,
@@ -25,6 +26,10 @@
     const submitForm = () => {
       form.post(`/store/${form.name}`);
     };
+
+    const back = () => {
+        window.history.back();
+    }
 </script>
 <template>
     <div class="container bg-slate-50">
@@ -32,22 +37,18 @@
         <!--NAVIGATION-->
         <nav class="mb-12 items-center relative w-full px-4 py-4 bg-crystal flex text-slate-50">
           <ul>
-            <li>
-                <Link href="/dashboard">
+            <li @click.prevent="back()">
                 <svg fill="none" class="opacity-100 h-6 w-6 " stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
                 </svg>
-                </Link>
             </li>
 
             <li>
-                <Link href="/dashboard">
-                <button class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
+                <button @click.prevent="back()" class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
                     <svg fill="none" stroke="currentColor" class="w-4 h-4" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                     </svg>
                 </button>
-                </Link>
             </li>
           </ul> 
         </nav>   
