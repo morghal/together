@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Profile" class="relative">
+    <AppLayout title="Profile" class="">
         <Header :hide="true"></Header>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">

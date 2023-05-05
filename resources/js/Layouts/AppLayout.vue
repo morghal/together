@@ -29,18 +29,16 @@ const logout = () => {
 };
 </script>
 
-<template class="relative">
+<template>
     <div :class="{'bg-gradient-to-b from-moonstone to-[#539ABB]' : bgMain, 'bg-slate-50' : ! bgMain}">
         <Head :title="title" />
 
-        <Banner />
-
         <!-- Hamburger -->
-        <nav class="absolute right-2 top-2 flex flex-col items-end z-10">
+        <nav class="absolute right-2 top-2 xl:right-[580px] lg:right-[320px] md:right-[200px] flex flex-col items-end z-10">
         <div class="flex">
                             <button class="inline-flex items-center justify-end p-2 rounded-md text-slate-50 focus:outline-nonetransition duration-150 ease-in-out" @click="showingNavigationDropdown = ! showingNavigationDropdown">
                                 <svg
-                                    class="h-6 w-6"
+                                    class="h-6 w-6 md:h-8 md:w-8"
                                     stroke="currentColor"
                                     fill="none"
                                     viewBox="0 0 24 24"

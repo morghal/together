@@ -3,6 +3,8 @@
     import FooterNav from '@/Components/FooterNav.vue';
     import TogetherLayout from '@/Layouts/AppLayout.vue';
     import Header from '../Components/Header.vue';
+    import { useLocationStore } from '../stores/locationStore';
+    import { useActivityStore } from '../stores/activityStore';
 
     const props = defineProps({
     activities: Array,
@@ -19,7 +21,7 @@
                 <div v-else="" class="h-10 bg-transparent"></div>
         </main>
         <footer>
-            <FooterNav class="fixed bottom-0"></FooterNav>
+            <FooterNav class="fixed bottom-0 md:w-[425px]"></FooterNav>
         </footer>
     </template>
 </TogetherLayout>

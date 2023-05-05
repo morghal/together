@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import computed from 'vue';
+import { computed, ref } from 'vue';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -22,25 +22,27 @@ const form = useForm({
     terms: false,
 });
 
+const lastsize = ref(0);
+
+const tirets = () => {
+    const size = form.birth_date.length; 
+    if(size > lastsize.value) {
+        if(size == 2 || size == 5) {
+            form.birth_date = form.birth_date + "-";
+        } 
+        lastsize.value = size;
+    }
+    else {
+        lastsize.value = size;
+    }
+}
+
 const submit = () => {
+    form.birth_date = form.birth_date.split("-").reverse().join('-');
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
-
-const Today = () => {
-    
-    const options = {
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit', 
-        timeZone: 'UTC'
-    };
-
-    const todayDate = new Date().toLocaleString(undefined, options).slice(0,10);
-    return todayDate;
-
-}
 </script>
 
 <template>
@@ -48,7 +50,9 @@ const Today = () => {
 
     <AuthenticationCard>
         <template #logo>
-            <AuthenticationCardLogo />
+            <svg fill="currentColor" class="icone h-20 w-20 mb-2 text-center inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
+                        </svg>
         </template>
 
         <form @submit.prevent="submit">
@@ -95,17 +99,18 @@ const Today = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="birth_date" value="Birthdate" />
+                <InputLabel for="birth_date" value="Birthdate"/>
                 <TextInput
                     id="birth_date"
                     v-model="form.birth_date"
-                    type="date"
-                    min="1910-01-01"
-                    :max="Today()"
+                    type="text"
+                    placeholder="Jour - Mois - Année"
+                    @keyup="tirets"
+                    pattern="^\d{2}-\d{2}-\d{4}$"
                     class="mt-1 block w-full"
+                    maxlength="10"
                     required
                     autofocus
-                    autocomplete="bday"
                 />
                 <InputError class="mt-2" :message="form.errors.birth_date" />
             </div>

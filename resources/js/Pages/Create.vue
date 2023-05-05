@@ -1,12 +1,23 @@
 <script setup>
     import navbar from '@/Components/FooterNav.vue'
     import { Link, useForm } from '@inertiajs/vue3'
+    import TextInput from '../Components/TextInput.vue'
+    import InputLabel from '../Components/InputLabel.vue'
+    import InputError from '@/Components/InputError.vue';
     import { computed, ref } from '@vue/reactivity'
     import { router } from '@inertiajs/vue3'
 
     const props = defineProps({
         categories:Array,
     });
+
+    
+    const options = {
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        timeZone: 'UTC'
+    };
 
     const form = useForm({
         _method:'POST',
@@ -31,9 +42,12 @@
     const back = () => {
         window.history.back();
     }
+    const Today = computed( () => {
+    return new Date().toLocaleString(undefined, options).slice(0,10).split("/").reverse().join("-");
+});
 </script>
 <template>
-    <div class="container bg-slate-50">
+    <div class="w-full bg-slate-50">
     <header class="">
         <!--NAVIGATION-->
         <nav class="mb-12 items-center relative w-full px-4 py-4 bg-crystal flex text-slate-50">
@@ -68,24 +82,22 @@
                     </div>
                     <img class="shadow-lg shadow-pewter-blue" :src="imgPath" alt="">
                 </label>
-                <input @change="form.image = $event.target.files[0]" type="file" id="image" name="image" class="" accept="image/png, image/jpeg">
+                <input @change="form.image = $event.target.files[0]" type="file" id="image" name="image" accept="image/png, image/jpeg">
                 <div v-if="form.errors.image">{{ form.errors.image }}</div>
                 
             </div>
             
            
            <!--TITRE-->
-           <label for="titre" class="text-slate-900 font-bold text-sm relative">
-                <div class="w-full">Titre
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                    </svg>
-                </div> 
-           </label>
-            <div class="relative mb-6">
-                <input v-model="form.title" type="text" id="titre" name="titre" class="rounded-lg bg-crystal pr-4 py-1 w-full">
-                <div v-if="form.errors.title">{{ form.errors.title }}</div>
-            </div>
+           <InputLabel for="titre" value="Titre" />
+                <TextInput
+                    id="titre"
+                    v-model="form.title"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.title" />
             
             <!--CATEGORIES-->
             <fieldset class="flex flex-wrap mb-6">
@@ -105,130 +117,105 @@
             </fieldset>
 
             <!--DATE_ACTIVITE-->
-            <label for="dateActivite" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Date de l'activité
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div> 
-            </label>
-            <div class="mb-6">
-                <input v-model="form.dateActivite" type="date" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dateActivite" name="dateActivite" min="1970-10-27" max="2024-10-27">
-                <div v-if="form.errors.dateActivite">{{ form.errors.dateActivite }}</div>
-            </div>
+            <InputLabel for="dateActivite" value="Date de l'activité" />
+                <TextInput
+                    id="dateActivite"
+                    v-model="form.dateActivite"
+                    type="date"
+                    class="mt-1 block w-full"
+                    required
+                    :min="Today"
+                />
+                <InputError class="mt-2" :message="form.errors.dateActivite" />
 
             <!--HEURE_ACTIVITE-->
-            <label for="heureActivite" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Heure de l'activité
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div> 
-            </label>
-            <div class="mb-6">
-                <input v-model="form.heureActivite" type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="heureActivite" name="heureActivite">
-                <div v-if="form.errors.heureActivite">{{ form.errors.heureActivite }}</div>
-            </div>
+            <InputLabel for="heureActivite" value="Heure de l'activité" />
+                <TextInput
+                    id="heureActivite"
+                    v-model="form.heureActivite"
+                    type="time"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.heureActivite" />
 
             <!--DUREE_ACTIVITE-->
-            <label for="dureeActivite" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Durée de l'activité
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="relative mb-6">
-                <input v-model="form.duration" type="time" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="dureeActivite" name="dureeActivite" min="01:00" max="12:00">
-                <div v-if="form.errors.duration">{{ form.errors.duration }}</div>
-            </div>
+            <InputLabel for="dureeActivite" value="Durée de l'activité" />
+                <TextInput
+                    id="dureeActivite"
+                    v-model="form.duration"
+                    type="time"
+                    class="mt-1 block w-full"
+                    min="00:30"
+                    max="12:00"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.duration" />
 
-            <!--NOMBRE_PARTICIPANTS-->  
-            <label for="nbrParticipants" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Nombre de participants
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="mb-6">
-                <input v-model="form.nbrParticipants" type="number" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="nbrParticipants" name="nbrParticipants" min="1" max="25">
-                <div v-if="form.errors.nbrParticipants">{{ form.errors.nbrParticipants }}</div>
-            </div>
+            <!--NOMBRE_PARTICIPANTS--> 
+            <InputLabel for="nbrParticipants" value="Nombre de participants" />
+                <TextInput
+                    id="nbrParticipants"
+                    v-model="form.nbrParticipants"
+                    type="number"
+                    class="mt-1 block w-full"
+                    min="1"
+                    max="25"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.nbrParticipants" /> 
 
             <!--ADRESSE-->
-            <label for="address" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Adresse
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="mb-6">
-                <input v-model="form.address" type="text" class="rounded-lg bg-crystal relative px-r py-1 w-full" id="address" name="address">
-                <div v-if="form.errors.address">{{ form.errors.address }}</div>
-            </div>
+            <InputLabel for="address" value="Adresse" />
+                <TextInput
+                    id="address"
+                    v-model="form.address"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.address" />
 
             <!--POSTCODE-->
-            <label for="postcode" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Code postal
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="mb-6">
-                <input v-model="form.postcode" type="text" pattern="[0-9]{4}" class="rounded-lg bg-crystal relative px-r py-1 w-full" id="postcode" name="postcode">
-                <div v-if="form.errors.postcode">{{ form.errors.postcode }}</div>
-            </div>
+            <InputLabel for="postcode" value="Code postal" />
+                <TextInput
+                    id="postcode"
+                    v-model="form.postcode"
+                    type="text"
+                    class="mt-1 block w-full"
+                    pattern="[0-9]{4}"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.postcode" />
 
             <!--VILLE-->
-            <label for="city" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Ville
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="mb-6">
-                <input v-model="form.city" type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="city" name="city">
-                <div v-if="form.errors.city">{{ form.errors.city }}</div>
-            </div>
+            <InputLabel for="city" value="Ville" />
+                <TextInput
+                    id="city"
+                    v-model="form.city"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.city" />
 
             <!--PAYS-->
-            <label for="country" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Pays
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
-            <div class="mb-6">
-                <input v-model="form.country" type="text" class="rounded-lg bg-crystal relative pr-4 py-1 w-full" id="country" name="country">
-                <div v-if="form.errors.country">{{ form.errors.country }}</div>
-            </div>
-
+            <InputLabel for="country" value="Pays" />
+                <TextInput
+                    id="country"
+                    v-model="form.country"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.country" />
+                
             <!--DESCRIPTION ACTIVITE-->
-            <label for="description" class="text-slate-900 font-bold mb-4 text-sm relative">
-                <div class="w-full">
-                    Description de l'activité
-                    <svg fill="none" class="w-4 h-4 absolute right-3 top-7 z-10" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                  </svg>
-                </div>
-            </label>
+            <InputLabel for="description" value="Description" />
             <div class="mb-6">
-                <textarea v-model="form.description" maxlength="250" class="rounded-lg bg-crystal relative h-52 pr-10 py-1 w-full" id="description" name="description">
+                <textarea v-model="form.description" maxlength="250" class="border-slate-300 focus:border-crystal focus:ring-crystal rounded-md text-slate-900 mb-4 text-sm shadow-sm h-52 pr-10 py-1 w-full " id="description" name="description">
                 </textarea>
-                <div v-if="form.errors.description">{{ form.errors.description }}</div>
+                <InputError class="mt-2" :message="form.errors.description" />
             </div>
             <div class="mb-6 flex">
                 <button class="text-center mr-3 rounded-lg bg-jellybeanblue font-medium text-slate-50 py-2 px-4" type="submit">
@@ -271,5 +258,11 @@
     height: auto;
     color: transparent;
     background: transparent;
+}
+@media (max-width: 320px) {
+  input[type="file"] {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 </style>

@@ -10,7 +10,7 @@ const props = defineProps({
             <div v-if="!hide" class="flex items-center">
                 <div class="relative">
                     <input
-                        class="pl-10 pr-4 py-2 border-0 bg-jellybeanblue rounded-2xl placeholder:text-semibold focus:ring-slate-500 placeholder:text-[#99BBC5] text-slate-50 text-medium "
+                        class="pl-10 pr-4 py-2 search border-0 bg-jellybeanblue rounded-2xl placeholder:text-semibold focus:ring-slate-500 placeholder:text-[#99BBC5] text-slate-50 text-medium "
                         type="text"
                         placeholder="Chercher des activités"
                     >
@@ -44,3 +44,10 @@ const props = defineProps({
         <!--/HEADER-->
 
 </template>
+<style>
+    @media (max-width: 320px) {
+  .search {
+    width: 180px;
+  }
+}
+</style>
