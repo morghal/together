@@ -41,14 +41,31 @@ class ActivitiesController extends Controller
         return $distance;
     }
 
-    public function dashboard(){
-        
+    public function dashboard(){    
         return Inertia::render('Index', [
             'categories' => Category::all(),      
     ]);
     }
 
-    
+    public function participate(Request $request) {
+        $activity = Activity::where("id", $request->activity)->first();
+
+        if(count($activity->users) < $activity->max_participants) {
+            $activity->users()->attach(auth()->user()->id);
+            return response()->json(auth()->user());
+        }
+        else {
+            return response()->json("nope");
+        }
+    }
+
+    public function unparticipate(Request $request) {
+        $activity = Activity::where("id", $request->activity)->first();
+
+        $activity->users()->detach(auth()->user()->id);
+        return response()->json(auth()->user());
+    }
+
     public function getActivitiesWithDistance(Request $request) {
 
           //Filtre et ajout de propriétés
@@ -60,7 +77,7 @@ class ActivitiesController extends Controller
             $activity->distance = round($this->distance($request->latitude,$request->longitude,$activity->latitude,$activity->longitude),2);
 
             //Ajoute l'activité au tableau filtered si elle respecte la condition de distance < 100km
-            if($activity->distance < 100) {
+            if($activity->distance < $request->range || $request->range == 0) {
                 //Ajoute des propriétés supplémentaires
                 $bookmark = Bookmark::where('user_id', auth()->user()->id )->where('activity_id',$activity->id)->get();
                     if (count($bookmark) != 0) {
@@ -70,6 +87,7 @@ class ActivitiesController extends Controller
                         $activity->bookmarked = false;
                     }
                 $activity->image = Image::where('activity_id', $activity->id)->first();
+                $activity->nbr_participants = count($activity->users);
                 //Ajoute au tableau filtered
                 array_push($filtered, $activity);
             }
@@ -85,12 +103,17 @@ class ActivitiesController extends Controller
         if (count($bookmark) != 0) {
             $bookmarked = true;
         }
+        $inscrit = false;
+        foreach($activity->users as $user) {
+            if($user->id == auth()->user()->id) {
+                $inscrit = true;
+            }    
+        }
 
         return Inertia::render('ShowActivity', [
             'activity' => [
                 'id' => $activity->id,
                 'title' => $activity->title,
-                'nbr_participants' => $activity->nbr_participants,
                 'max_participants' => $activity->max_participants,
                 'category_name' => $activity->category->name,
                 'user' => $activity->user->pseudo,
@@ -106,8 +129,9 @@ class ActivitiesController extends Controller
                 'distance' => 0,
                 'image' => Image::where('activity_id', $activity->id)->get('name')->first()->name,
                 'user' => User::where('id', $activity->user_id)->get()->first(),
-                'participants' => $activity->participants,
-                'bookmarked' => $bookmarked
+                'participants' => $activity->users,
+                'bookmarked' => $bookmarked,
+                'inscrit' => $inscrit,
             ],
         ]);
     }
@@ -140,7 +164,7 @@ class ActivitiesController extends Controller
                 return [
                     'id' => $activity->id,
                     'title' => $activity->title,
-                    'nbr_participants' => $activity->nbr_participants,
+                    'nbr_participants' => count($activity->users),
                     'max_participants' => $activity->max_participants,
                     'category_name' => $activity->category->name,
                     'user' => $activity->user->pseudo,

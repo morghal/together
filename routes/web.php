@@ -61,4 +61,6 @@ Route::middleware([
     Route::get('/favoris', [BookmarksController::class, 'index'])->name('bookmarks');
     Route::post('/add/{activity}/favoris', [BookmarksController::class, 'store'])->name('newBookmark');
     Route::delete('/destroy/{activity}/favoris', [BookmarksController::class, 'destroy'])->name('destroyBookmark');
+    Route::post('/participate', [ActivitiesController::class, 'participate'])->name('participate');
+    Route::delete('/unparticipate', [ActivitiesController::class, 'unparticipate'])->name('unparticipate');
 });

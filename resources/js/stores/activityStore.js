@@ -19,11 +19,12 @@ export const useActivityStore = defineStore('activity', () => {
       return activities.value.slice().sort((a, b) => { return new Date(a.start_time) - new Date(b.start_time);});
     })
 
-  function fetchActivities(position) {
+  function fetchActivities(position,radius) {
     axios.get('/activities', {
       params: {
         latitude:position.latitude,
-        longitude:position.longitude
+        longitude:position.longitude,
+        range:radius
       }
     })
     .then(response => {

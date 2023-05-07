@@ -84,7 +84,7 @@ class User extends Authenticatable
     }
 
     public function participations() {
-        return $this->belongsToMany(Activity::class, 'activities_have_participants');
+        return $this->belongsToMany(Activity::class, 'activities_have_participants', 'user_id', 'activity_id');
     }
 
     public function bookmarks() {
