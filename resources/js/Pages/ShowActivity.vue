@@ -51,8 +51,7 @@ const locationStore = useLocationStore();
       }
         })
       .then(response => {
-      console.log(response.data);
-      props.activity.participants.splice(response.data.indexOf, 1);
+      props.activity.participants.splice(props.activity.participants.findIndex((participant) => participant.id === response.data.id), 1);
       props.activity.inscrit = false;
     })
   }
