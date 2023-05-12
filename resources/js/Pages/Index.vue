@@ -6,6 +6,7 @@ import Header from '../Components/Header.vue';
 import { useLocationStore } from '../stores/locationStore';
 import { useActivityStore } from '../stores/activityStore';
 import { onServerPrefetch, computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 const locationStore = useLocationStore();
 const activitiesStore = useActivityStore();
@@ -28,6 +29,7 @@ onServerPrefetch(
 </script>
 
 <template>
+    <Head title="Dashboard" />
     <TogetherLayout>
     <template #default>
         <div class="bg-gradient-to-b from-moonstone to-[#539ABB]">

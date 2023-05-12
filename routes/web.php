@@ -63,4 +63,5 @@ Route::middleware([
     Route::delete('/destroy/{activity}/favoris', [BookmarksController::class, 'destroy'])->name('destroyBookmark');
     Route::post('/participate', [ActivitiesController::class, 'participate'])->name('participate');
     Route::delete('/unparticipate', [ActivitiesController::class, 'unparticipate'])->name('unparticipate');
+    Route::get('/distance', [ActivitiesController::class, 'calculateDistance'])->name('distance');
 });

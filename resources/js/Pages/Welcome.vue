@@ -12,21 +12,21 @@ defineProps({
 <template>
     <Head title="Welcome" />
 
-    <div class="relative flex flex-col justify-center items-center min-h-screen bg-gradient-to-b from-moonstone to-[#539ABB] selection:bg-red-500 selection:text-white h-full text-slate-50">
-            <svg fill="currentColor" class="icone h-8 w-8 mb-2 text-center inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <div class="relative flex flex-col justify-center min-h-screen bg-gradient-to-b from-moonstone to-[#539ABB] selection:bg-red-500 selection:text-white h-full text-slate-50">
+            <svg fill="currentColor" class="mx-auto icone h-8 w-8 mb-2 text-center inline text-caribbeangreen" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"></path>
                         </svg>
             <h1 class="text-slate-50 text-center text-4xl font-bold mb-2">Together</h1>
             <div v-if="canLogin" class="p-3 text-center">
-            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="font-semibold text-slate-50 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">accès Dashboard</Link>
+            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="font-semibold text-slate-50 focus:text-crystal hover:text-crystal focus:rounded-sm">accès Dashboard</Link>
 
             <template v-else class="flex justify-center">
-                <Link :href="route('login')" class="font-semibold mr-4">Log in</Link>
+                <Link :href="route('login')" class="font-semibold mr-4 focus:text-crystal hover:text-crystal">Log in</Link>
                 <div class="inline semibold">-</div>
-                <Link v-if="canRegister" :href="route('register')" class="ml-4 font-semibold ">Register</Link>
+                <Link v-if="canRegister" :href="route('register')" class="ml-4 font-semibold focus:text-crystal hover:text-crystal">Register</Link>
             </template>
 
-        </div>
+            </div>
         
     </div>
 </template>

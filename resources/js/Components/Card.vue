@@ -10,10 +10,6 @@ const props = defineProps({
   img:String
 });
 
-onMounted(() => {
-
-})
-
 const shorten = (string, limit) => {
   if(string.length > limit) {
     const truncated = string.substring(0,20);

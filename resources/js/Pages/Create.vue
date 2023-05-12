@@ -4,8 +4,8 @@
     import TextInput from '../Components/TextInput.vue'
     import InputLabel from '../Components/InputLabel.vue'
     import InputError from '@/Components/InputError.vue';
-    import { computed, ref } from '@vue/reactivity'
-    import { router } from '@inertiajs/vue3'
+    import { computed } from '@vue/reactivity';
+    import { Head } from '@inertiajs/vue3';
 
     const props = defineProps({
         categories:Array,
@@ -39,38 +39,38 @@
       form.post(`/store/${form.name}`);
     };
 
-    const back = () => {
-        window.history.back();
-    }
     const Today = computed( () => {
     return new Date().toLocaleString(undefined, options).slice(0,10).split("/").reverse().join("-");
 });
 </script>
 <template>
+    <Head title="Nouvelle Activité" />
     <div class="w-full bg-slate-50">
     <header class="">
         <!--NAVIGATION-->
         <nav class="mb-12 items-center relative w-full px-4 py-4 bg-crystal flex text-slate-50">
           <ul>
-            <li @click.prevent="back()">
+            <li>
+                <Link as="button" href="/dashboard">
                 <svg fill="none" class="opacity-100 h-6 w-6 " stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
                 </svg>
+                </Link>
             </li>
 
             <li>
-                <button @click.prevent="back()" class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
+                <Link as="button" href="/dashboard" class="rotate-45 absolute right-4 top-3 p-2 rounded-full bg-slate-50 text-center text-slate-800 ">
                     <svg fill="none" stroke="currentColor" class="w-4 h-4" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                     </svg>
-                </button>
+                </Link>
             </li>
           </ul> 
         </nav>   
     </header>
     <main class="px-6">
         <form :action="`/store/${form.name}`" @submit.prevent="submitForm" method="post" enctype="multipart/form-data">
-            
+            <div class="font-semibold mb-10 text-jellybeanblue">{{  $page.props.errors.address }}</div>
             <!--IMAGE-->
             <div class="px-2 mb-12 relative">
                 <label for="image">

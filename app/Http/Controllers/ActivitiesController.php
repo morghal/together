@@ -224,6 +224,10 @@ class ActivitiesController extends Controller
         $err = curl_error($curl); 
         curl_close($curl);
         $resp = json_decode($response, true);
+        if(count($resp) == 0){
+            $errors = ['address' => 'Oops adresse invalide ! Corrigez-la ou essayez une autre adresse proche.'];
+            return to_route('create')->withErrors($errors);
+        }
 
             // Remplit le modèle de données
             $activity->title = $request->title;

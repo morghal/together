@@ -37,7 +37,7 @@ export const useActivityStore = defineStore('activity', () => {
   }
 
   function setDistance(position, acti) {
-    axios.get('/api/distance', {
+    axios.get('/distance', {
       params: {
         latitudeUser:position.latitude,
         longitudeUser:position.longitude,

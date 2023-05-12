@@ -38,7 +38,7 @@ const logout = () => {
         <div class="flex">
                             <button class="inline-flex items-center justify-end p-2 rounded-md text-slate-50 focus:outline-nonetransition duration-150 ease-in-out" @click="showingNavigationDropdown = ! showingNavigationDropdown">
                                 <svg
-                                    class="h-6 w-6 md:h-8 md:w-8"
+                                    class="h-8 w-8 md:h-8 md:w-8"
                                     stroke="currentColor"
                                     fill="none"
                                     viewBox="0 0 24 24"

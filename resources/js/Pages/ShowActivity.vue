@@ -5,6 +5,7 @@
   import { useLocationStore } from '@/stores/locationStore';
 import { onMounted, computed } from 'vue';
 import axios from 'axios';
+import { Head } from '@inertiajs/vue3';
 
 const store = useActivityStore();
 const locationStore = useLocationStore();
@@ -58,6 +59,7 @@ const locationStore = useLocationStore();
 
 </script>
 <template>
+  <Head :title="`Détails activité ${activity.title}`" />
     <article class="bg-gradient-to-b from-moonstone to-[#539ABB]">
     <header class="relative">
         <nav class="items-center absolute w-full px-4 py-4 bg-neutral-900/50 flex text-slate-50">

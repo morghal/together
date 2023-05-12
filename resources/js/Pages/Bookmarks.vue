@@ -6,6 +6,7 @@
     import { useLocationStore } from '../stores/locationStore';
     import { useActivityStore } from '../stores/activityStore';
     import { onMounted, computed} from 'vue';
+    import { Head } from '@inertiajs/vue3';
 
     const locationStore = useLocationStore();
     const activitiesStore = useActivityStore();
@@ -29,6 +30,7 @@
 
 </script>
 <template>
+    <Head title="Favoris" />
     <TogetherLayout>
 <template #default class="bg-gradient-to-b from-moonstone to-[#539ABB] relative">
         <Header :hide="false"></Header>
