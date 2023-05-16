@@ -51,7 +51,7 @@ export const useActivityStore = defineStore('activity', () => {
   }
 
  function photo_participant(participant) {
-    return '/storage/users/' + participant.profile_photo_path
+    return '/storage/' + participant.profile_photo_path
   }
 
  function dateTime(target) {

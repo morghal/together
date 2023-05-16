@@ -1,1 +1,0 @@
-import{N as n}from"./app-b324b9d6.js";const d=n("coords",()=>({coords:async()=>new Promise((t,s)=>navigator.geolocation.getCurrentPosition(o=>{let r=o.coords.latitude,e=o.coords.longitude;t({latitude:r,longitude:e})}))}));export{d as u};

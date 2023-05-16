@@ -21,9 +21,8 @@ const form = useForm({
     email: props.user.email,
     intro: props.user.intro,
     description: props.user.description,
-    birth_date: props.user.birth_date,
-    ville: props.user.ville,
-    pays: props.user.pays,
+    city: props.user.city,
+    country: props.user.country,
     photo: null,
 });
 
@@ -107,7 +106,7 @@ const clearPhotoFileInput = () => {
 
                 <!-- Current Profile Photo -->
                 <div v-show="! photoPreview" class="mt-2">
-                    <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                    <img :src="`/storage/`+user.profile_photo_path" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -135,40 +134,40 @@ const clearPhotoFileInput = () => {
             </div>
 
             <!-- Pseudo -->
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="pseudo" value="Pseudo" />
+           <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="pseudo" value="pseudo" />
                 <TextInput
                     id="pseudo"
                     v-model="form.pseudo"
                     type="text"
                     class="mt-1 block w-full"
-                    autocomplete="username"
-                />
-                <InputError :message="form.errors.pseudo" class="mt-2" />
-            </div>
-
-            <!-- Name -->
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="firstname" value="Firstname" />
-                <TextInput
-                    id="firstname"
-                    v-model="form.name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    autocomplete="given-name"
+                    autocomplete="pseudo"
                 />
                 <InputError :message="form.errors.firstname" class="mt-2" />
             </div>
 
-            <!-- Name -->
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="lastname" value="Lastname" />
+           <!-- Name -->
+           <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="firstname" value="First name" />
                 <TextInput
-                    id="lastname"
-                    v-model="form.name"
+                    id="firstname"
+                    v-model="form.firstname"
                     type="text"
                     class="mt-1 block w-full"
-                    autocomplete="family-name"
+                    autocomplete="name"
+                />
+                <InputError :message="form.errors.firstname" class="mt-2" />
+            </div>
+
+            <!--Last Name -->
+           <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="lastname" value="Last name" />
+                <TextInput
+                    id="lastname"
+                    v-model="form.lastname"
+                    type="text"
+                    class="mt-1 block w-full"
+                    autocomplete="lastname"
                 />
                 <InputError :message="form.errors.lastname" class="mt-2" />
             </div>
@@ -181,7 +180,7 @@ const clearPhotoFileInput = () => {
                     v-model="form.email"
                     type="email"
                     class="mt-1 block w-full"
-                    autocomplete="email"
+                    autocomplete="username"
                 />
                 <InputError :message="form.errors.email" class="mt-2" />
 
@@ -230,43 +229,30 @@ const clearPhotoFileInput = () => {
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
 
-             <!-- Birth_date -->
+             <!-- city -->
              <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="birth_date" value="Birth date" />
+                <InputLabel for="city" value="city" />
                 <TextInput
-                    id="birth_date"
-                    v-model="form.birth_date"
-                    type="date"
-                    class="mt-1 block w-full"
-                    autocomplete="bday"
-                />
-                <InputError :message="form.errors.birth_date" class="mt-2" />
-            </div>
-
-             <!-- Ville -->
-             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="ville" value="Ville" />
-                <TextInput
-                    id="ville"
-                    v-model="form.intro"
+                    id="city"
+                    v-model="form.city"
                     type="text"
                     class="mt-1 block w-full"
                     autocomplete="address-level2"
                 />
-                <InputError :message="form.errors.ville" class="mt-2" />
+                <InputError :message="form.errors.city" class="mt-2" />
             </div>
 
-            <!-- Pays -->
+            <!-- country -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="pays" value="Pays" />
+                <InputLabel for="country" value="country" />
                 <TextInput
-                    id="pays"
-                    v-model="form.intro"
+                    id="country"
+                    v-model="form.country"
                     type="text"
                     class="mt-1 block w-full"
                     autocomplete="country"
                 />
-                <InputError :message="form.errors.pays" class="mt-2" />
+                <InputError :message="form.errors.country" class="mt-2" />
             </div>
         </template>
 

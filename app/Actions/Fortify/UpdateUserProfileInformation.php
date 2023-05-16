@@ -18,13 +18,21 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'pseudo' => ['required', 'string', 'max:255'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'intro' => 'nullable|string',
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
+            $input['photo']->storeAs('storage/profile-photos', $input['photo']->getClientOriginalName());
+            $user->profile_photo_path = "profile-photos/" . $input['photo']->getClientOriginalName();
         }
 
         if ($input['email'] !== $user->email &&
@@ -32,8 +40,15 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
-                'name' => $input['name'],
+                'pseudo' => $input['pseudo'],
+                'firstname' => $input['firstname'],
+                'lastname' => $input['lastname'],
                 'email' => $input['email'],
+                'city' => $input['city'],
+                'country' => $input['country'],
+                'description' => $input['description'],
+                'intro' => $input['intro'],
+
             ])->save();
         }
     }

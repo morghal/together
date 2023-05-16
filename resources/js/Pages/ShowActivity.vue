@@ -26,7 +26,7 @@ const locationStore = useLocationStore();
   
   const edit = false;
 
-  const photo_path = computed( () =>{ return '/storage/users/' + props.activity.user.profile_photo_path});
+  const photo_path = computed( () =>{ return '/storage/' + props.activity.user.profile_photo_path});
   
   onMounted(()=>{
     loadActivity();
